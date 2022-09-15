@@ -23,7 +23,7 @@ IP connectivity             |  FC connectivity
 ## How to execute these playbooks?
 
 ### High-Level FlashStack Automation
-<img width="818" alt="Screen Shot 2022-09-15 at 5 03 58 PM" src="https://user-images.githubusercontent.com/25094641/190393678-6cafd996-fae2-4553-8f23-12cbe1c11293.png">
+<img width="1200" alt="Screen Shot 2022-09-15 at 5 03 58 PM" src="https://user-images.githubusercontent.com/25094641/190393678-6cafd996-fae2-4553-8f23-12cbe1c11293.png">
 
 <br />
 <br />
