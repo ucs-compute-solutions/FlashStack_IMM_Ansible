@@ -44,7 +44,6 @@ To execute various ansible playbooks, a Linux based system will need to be setup
  
 # How to execute these playbooks?
 <br />
-<br />
 
 ##  FlashStack Automated Deployment Workflow
 
