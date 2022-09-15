@@ -61,6 +61,8 @@ To execute the playbooks against your Intersight account, you need to complete f
 https://community.cisco.com/t5/data-center-and-cloud-documents/intersight-api-overview/ta-p/3651994
 
 The API key and Secrets_Filename information is added to the group_vars/all.yml. The default Secrets_File value in all.yml assumes Secrets_File was copied to the same folder/directory where Ansible Playbooks were cloned (alongside inventory file).
+ 
+<br />
 
 ### Setting up Variables
 
@@ -71,6 +73,9 @@ All the variables used in this framework are defined in the following locations:
 
 **NOTE:** All pools and policies created using these playbooks are tagged with user_defined_prefix and "ansible" to easily filter the configuration.
 
+ 
+<br />
+
 ### Post Configuration Tasks
 
 Execution of the playbooks in these repositories set up Server Profile Template. After successfully executing the playbooks, one or more server profiles can easily derived and attached to the compute node from Intersight dashboard. KVM mounted DVD option is available to install OS to these newly derived servers.
@@ -78,7 +83,7 @@ Execution of the playbooks in these repositories set up Server Profile Template.
 
 
 
-### Playbook Execution Commands – Summary:
+### Playbook Execution Commands
 Setup all the variables before executing the playbooks as detailed in the CVD: https://www.cisco.com/c/en/us/td/docs/unified_computing/ucs/UCS_CVDs/flashstack_vSphere7.0U2.html
 
 1.	Setup LAN on Nexus and UCS: "ansible-playbook ./Setup_Nexus.yml -i inventory"
