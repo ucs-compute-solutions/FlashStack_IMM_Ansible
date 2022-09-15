@@ -42,7 +42,8 @@ To execute various ansible playbooks, a Linux based system will need to be setup
 `ansible-galaxy collection install purestorage.flasharray` (Pure Storage FlashArray Collection) <br />
 `ansible-galaxy collection install community.vmware` (For VMWare Ansible Collection) <br />
  
-# How to execute these playbooks?
+<br />
+## How to execute these playbooks?
 <br />
 
 ###  FlashStack Automated Deployment Workflow
