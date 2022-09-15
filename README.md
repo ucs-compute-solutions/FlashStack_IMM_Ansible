@@ -70,8 +70,7 @@ All the variables used in this framework are defined in the following locations:
 
 1. Variable that require customer inputs are part of group_vars/all.yml
 2. Variable that do not typically require customer input (e.g. descriptions etc.) are present under role_name/defauls/main.yml.
-
-**NOTE:** All pools and policies created using these playbooks are tagged with user_defined_prefix and "ansible" to easily filter the configuration.
+Setup all the variables before executing the playbooks as detailed in the CVD. Intersight's pools and policies created using these playbooks are tagged with user_defined_prefix and "ansible" to easily filter the configuration.
 
 <br />
 
@@ -82,12 +81,12 @@ Execution of the playbooks in these repositories set up Server Profile Template.
 <br />
 
 ### Playbook Execution Commands
-Setup all the variables before executing the playbooks as detailed in the CVD: https://www.cisco.com/c/en/us/td/docs/unified_computing/ucs/UCS_CVDs/flashstack_vSphere7.0U2.html
-
-1.	Setup LAN on Nexus and UCS: "ansible-playbook ./Setup_Nexus.yml -i inventory"
+1.	Setup LAN on Nexus: "ansible-playbook ./Setup_Nexus.yml -i inventory"
 2.	Setup Pure FlashArray Initial Config - Optional: "ansible-playbook ./Setup_Pure.yml -i inventory"
-3.	Setup Cisco UCS: "ansible-playbook ./Setup_UCS.yml -i inventory"
-4.	Setup Pure FlashArray: "ansible-playbook ./Setup_MDS.yml -i inventory"
-5.	Setup Pure FlashArray: "ansible-playbook ./Setup_Pure.yml -i inventory"
-6.	Setup VMWare ESXi servers: "ansible-playbook ./Setup_ESXi.yml -i inventory"
-7.	Setup VMWare Cluster and vCenter Setup: "ansible-playbook ./Setup_vCenter.yml -i inventory"	
+3.	Setup various pools in Intersight: `ansible-playbook ./create_pools.yml -i inventory`
+4.	Setup various policies in Intersight: `ansible-playbook ./create_server_policies.yml -i inventory`
+5.	Setup Server Profile Template(s) in INtersight: `ansible-playbook ./create_server_profile_template.yml -i inventory`
+6.	Setup Pure FlashArray: "ansible-playbook ./Setup_MDS.yml -i inventory"
+7.	Setup Pure FlashArray: "ansible-playbook ./Setup_Pure.yml -i inventory"
+8.	Setup VMWare ESXi servers: "ansible-playbook ./Setup_ESXi.yml -i inventory"
+9.	Setup VMWare Cluster and vCenter Setup: "ansible-playbook ./Setup_vCenter.yml -i inventory"	
