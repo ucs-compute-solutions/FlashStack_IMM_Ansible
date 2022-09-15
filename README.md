@@ -12,21 +12,21 @@ Details are covered in the following Cisco Validated Design (CVD):
 
 The CVD lays out the complete process for configuring the FlashStack using Ansible. Since these playbooks are intended to save time in setting up a working FlashStack, a complete FlashStack as shown below is needed to execute the playbooks. 
 
-# FlashStack - physical topology for IP connectivity
+## FlashStack - physical topology for IP connectivity
 
 ![ethernet](https://user-images.githubusercontent.com/25094641/190374265-daef542b-cdc6-40f6-9c7a-6cf76f99bbe2.jpg)
 
 <br />
 <br />
 
-# FlashStack - physical topology for FC connectivity
+## FlashStack - physical topology for FC connectivity
 ![fc (1)](https://user-images.githubusercontent.com/25094641/190374304-b505b0e6-1011-4312-aca8-3d729d7fa1c4.jpg)
 
 
 <br />
 <br />
 
-# Set up the execution environment
+## Set up the execution environment
 To execute various ansible playbooks, a Linux based system will need to be setup as described in the CVD with the packages listed at the following pages: <br />
  •	Cisco Intersight: https://galaxy.ansible.com/cisco/intersight <br />
  •	Cisco NxOS: https://galaxy.ansible.com/cisco/nxos <br />
@@ -45,7 +45,7 @@ To execute various ansible playbooks, a Linux based system will need to be setup
 # How to execute these playbooks?
 <br />
 
-##  FlashStack Automated Deployment Workflow
+###  FlashStack Automated Deployment Workflow
 
 ![image](https://user-images.githubusercontent.com/3585414/144469881-a647e3fa-f48e-411c-b13c-822bfb9a15ea.png)
 <br />
