@@ -28,7 +28,7 @@ The CVD lays out the complete process for configuring the FlashStack using Ansib
 
 # Set up the execution environment
 To execute various ansible playbooks, a Linux based system will need to be setup as described in the CVD with the packages listed at the following pages: <br />
- •	Cisco Intersight: [https://galaxy.ansible.com/cisco/ucs](https://galaxy.ansible.com/cisco/intersight?extIdCarryOver=true&sc_cid=701f2000001OH7YAAW) <br />
+ •	Cisco Intersight: https://galaxy.ansible.com/cisco/intersight <br />
  •	Cisco NxOS: https://galaxy.ansible.com/cisco/nxos <br />
  •	Pure FlashArray: https://galaxy.ansible.com/purestorage/flasharray <br />
  •	VMware: https://galaxy.ansible.com/community/vmware <br />
