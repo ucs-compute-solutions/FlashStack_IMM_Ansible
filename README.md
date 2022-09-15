@@ -23,6 +23,8 @@ The CVD lays out the complete process for configuring the FlashStack using Ansib
 ![fc (1)](https://user-images.githubusercontent.com/25094641/190374304-b505b0e6-1011-4312-aca8-3d729d7fa1c4.jpg)
 
 
+<br />
+<br />
 
 # Set up the execution environment
 To execute various ansible playbooks, a Linux based system will need to be setup as described in the CVD with the packages listed at the following pages: <br />
