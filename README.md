@@ -85,6 +85,9 @@ Setup all the variables before executing the playbooks as detailed in the CVD. I
 7.	Setup VMWare ESXi servers: `ansible-playbook ./Setup_ESXi.yml -i inventory`
 8.	Setup VMWare Cluster and vCenter Setup: `ansible-playbook ./Setup_vCenter.yml -i inventory`
 
+<br />
+
+
 ### Post Configuration Tasks
 
 Execution of first three playbooks in these repositories set up Server Profile Template in Intersight. After successfully executing the playbooks, one or more server profiles can easily derived and attached to the compute node from Intersight dashboard. KVM mounted DVD option is available to install OS to these newly derived servers.
