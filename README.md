@@ -43,6 +43,7 @@ To execute various ansible playbooks, a Linux based system will need to be setup
 `ansible-galaxy collection install community.vmware` (For VMWare Ansible Collection) <br />
  
 <br />
+
 ## How to execute these playbooks?
 <br />
 
