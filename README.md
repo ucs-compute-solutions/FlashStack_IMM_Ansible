@@ -33,6 +33,14 @@ To execute various ansible playbooks, a Linux based system will need to be setup
  •	Pure FlashArray: https://galaxy.ansible.com/purestorage/flasharray <br />
  •	VMware: https://galaxy.ansible.com/community/vmware <br />
  
+ You might already have this collection installed. 
+
+- To check whether it is installed, run: `ansible-galaxy collection list`
+- To install it, use: `ansible-galaxy collection install cisco.intersight`
+`ansible-galaxy collection install cisco.nxos`
+`ansible-galaxy collection install purestorage.flasharray`
+`ansible-galaxy collection install community.vmware`
+ 
 # How to execute these playbooks?
 
 # FlashStack Automated Deployment Workflow
