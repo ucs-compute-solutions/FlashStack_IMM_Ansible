@@ -46,6 +46,12 @@ To execute various ansible playbooks, a Linux based system will need to be setup
 
 ## How to execute these playbooks?
 
+### High-Level FlashStack Automation
+
+![image](https://user-images.githubusercontent.com/3585414/144472418-e5559aad-88bc-4ceb-a10c-c25f4fab8a53.png)
+<br />
+<br />
+
 
 ###  FlashStack Automated Deployment Workflow
 
@@ -53,11 +59,7 @@ To execute various ansible playbooks, a Linux based system will need to be setup
 <br />
 <br />
 
-### High-Level FlashStack Automation
 
-![image](https://user-images.githubusercontent.com/3585414/144472418-e5559aad-88bc-4ceb-a10c-c25f4fab8a53.png)
-<br />
-<br />
 ### Playbook Execution Commands – Summary:
 Setup all the variables before executing the playbooks as detailed in the CVD: https://www.cisco.com/c/en/us/td/docs/unified_computing/ucs/UCS_CVDs/flashstack_vSphere7.0U2.html
 
