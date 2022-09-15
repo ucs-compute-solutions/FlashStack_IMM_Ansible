@@ -30,8 +30,7 @@ IP connectivity             |  FC connectivity
 
 
 ###  FlashStack Automated Deployment Workflow
-
-![image](https://user-images.githubusercontent.com/3585414/144469881-a647e3fa-f48e-411c-b13c-822bfb9a15ea.png)
+<img width="1300" src="https://user-images.githubusercontent.com/3585414/144469881-a647e3fa-f48e-411c-b13c-822bfb9a15ea.png">
 <br />
 <br />
 
