@@ -19,7 +19,6 @@ IP connectivity             |  FC connectivity
 ![](https://user-images.githubusercontent.com/25094641/190374265-daef542b-cdc6-40f6-9c7a-6cf76f99bbe2.jpg)  |  ![](https://user-images.githubusercontent.com/25094641/190374304-b505b0e6-1011-4312-aca8-3d729d7fa1c4.jpg)
 
 <br />
-<br />
 
 ## How to execute these playbooks?
 
