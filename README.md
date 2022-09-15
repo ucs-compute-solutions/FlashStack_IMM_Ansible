@@ -14,13 +14,13 @@ The CVD lays out the complete process for configuring the FlashStack using Ansib
 
 # FlashStack - physical topology for IP connectivity
 
-![ethernet](https://user-images.githubusercontent.com/25094641/190374265-daef542b-cdc6-40f6-9c7a-6cf76f99bbe2.jpg)
+![ethernet](https://user-images.githubusercontent.com/25094641/190374265-daef542b-cdc6-40f6-9c7a-6cf76f99bbe2.jpg =250x250)
 
 <br />
 <br />
 
 # FlashStack - physical topology for FC connectivity
-![fc (1)](https://user-images.githubusercontent.com/25094641/190374304-b505b0e6-1011-4312-aca8-3d729d7fa1c4.jpg)
+![fc (1)](https://user-images.githubusercontent.com/25094641/190374304-b505b0e6-1011-4312-aca8-3d729d7fa1c4.jpg width=100)
 
 
 <br />
