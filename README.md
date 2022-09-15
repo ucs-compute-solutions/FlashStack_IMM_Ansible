@@ -1,5 +1,11 @@
 # FlashStack Virtual Server Infrastructure for End-to-End 100 Gigabit with Cisco UCS X-Series and Cisco UCS 5th Generation Fabric Technology
 
+This repository  contains Ansible playbooks to configure all components of FlashStack including:
+ •	Cisco UCS in Intersight Managed Mode (IMM), 
+ •	Cisco Nexus and MDS Switches, 
+ •	Pure FlashArray  
+ •	VMware ESXi and VMware vCenter. 
+
 This repository for FlashStack contains Ansible playbooks to configure Cisco Nexus, Cisco UCS, Cisco MDS, Pure FlashArray for VMware ESXi and VMware vCenter. This repository can be used for setting up Cisco devices, Pure FlashArray as well as VMware ESXi and vCenter as covered in the following Cisco Validated Design (CVD): https://www.cisco.com/c/en/us/td/docs/unified_computing/ucs/UCS_CVDs/flashstack_vsi_xseries_70u2_design.html.
 
 The CVD lays out the complete process for configuring the FlashStack using Ansible. Since these playbooks are intended to save time in setting up a working FlashStack, a complete FlashStack as shown below is needed to execute the playbooks. Various simulators could be used to partially test individual playbooks.
