@@ -74,10 +74,10 @@ All the variables used in this framework are defined in the following locations:
 **NOTE:** All pools and policies created using these playbooks are tagged with user_defined_prefix and "ansible" to easily filter the configuration.
 
 <br />
+
 ### Post Configuration Tasks
 
 Execution of the playbooks in these repositories set up Server Profile Template. After successfully executing the playbooks, one or more server profiles can easily derived and attached to the compute node from Intersight dashboard. KVM mounted DVD option is available to install OS to these newly derived servers.
-
 
 <br />
 
