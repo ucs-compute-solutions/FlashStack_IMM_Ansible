@@ -36,7 +36,7 @@ IP connectivity             |  FC connectivity
 <br />
 
 
-## Set up the execution environment
+### Set up the execution environment
 To execute various ansible playbooks, a Linux based system will need to be setup as described in the CVD with the packages listed at the following pages: <br />
  •	Cisco Intersight: https://galaxy.ansible.com/cisco/intersight <br />
  •	Cisco NxOS: https://galaxy.ansible.com/cisco/nxos <br />
@@ -53,6 +53,30 @@ To execute various ansible playbooks, a Linux based system will need to be setup
 `ansible-galaxy collection install community.vmware` (For VMWare Ansible Collection) <br />
  
 <br />
+
+### Intersight Access Requirement
+
+To execute the playbooks against your Intersight account, you need to complete following additional steps of creating an API key and saving the Secrets_File:
+
+https://community.cisco.com/t5/data-center-and-cloud-documents/intersight-api-overview/ta-p/3651994
+
+The API key and Secrets_Filename information is added to the group_vars/all.yml. The default Secrets_File value in all.yml assumes Secrets_File was copied to the same folder/directory where Ansible Playbooks were cloned (alongside inventory file).
+
+### Setting up Variables
+
+All the variables used in this framework are defined in the following locations:
+
+1. Variable that require customer inputs are part of group_vars/all.yml
+2. Variable that do not typically require customer input (e.g. descriptions etc.) are present under role_name/defauls/main.yml.
+
+**NOTE:** All pools and policies created using these playbooks are tagged with user_defined_prefix and "ansible" to easily filter the configuration.
+
+### Post Configuration Tasks
+
+Execution of the playbooks in these repositories set up Server Profile Template. After successfully executing the playbooks, one or more server profiles can easily derived and attached to the compute node from Intersight dashboard. KVM mounted DVD option is available to install OS to these newly derived servers.
+
+
+
 
 ### Playbook Execution Commands – Summary:
 Setup all the variables before executing the playbooks as detailed in the CVD: https://www.cisco.com/c/en/us/td/docs/unified_computing/ucs/UCS_CVDs/flashstack_vSphere7.0U2.html
