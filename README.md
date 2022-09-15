@@ -52,7 +52,8 @@ To execute various ansible playbooks, a Linux based system will need to be setup
 ![image](https://user-images.githubusercontent.com/3585414/144469881-a647e3fa-f48e-411c-b13c-822bfb9a15ea.png)
 <br />
 <br />
-## High-Level FlashStack Automation
+
+### High-Level FlashStack Automation
 
 ![image](https://user-images.githubusercontent.com/3585414/144472418-e5559aad-88bc-4ceb-a10c-c25f4fab8a53.png)
 <br />
