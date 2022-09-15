@@ -81,12 +81,12 @@ Execution of the playbooks in these repositories set up Server Profile Template.
 <br />
 
 ### Playbook Execution Commands
-1.	Setup LAN on Nexus: `ansible-playbook ./Setup_Nexus.yml -i inventory`
-2.	Setup Pure FlashArray Initial Config - Optional: `ansible-playbook ./Setup_Pure.yml -i inventory`
-3.	Setup various pools in Intersight: `ansible-playbook ./create_pools.yml -i inventory`
-4.	Setup various policies in Intersight: `ansible-playbook ./create_server_policies.yml -i inventory`
-5.	Setup Server Profile Template(s) in INtersight: `ansible-playbook ./create_server_profile_template.yml -i inventory`
-6.	Setup Pure FlashArray: `ansible-playbook ./Setup_MDS.yml -i inventory`
-7.	Setup Pure FlashArray: `ansible-playbook ./Setup_Pure.yml -i inventory`
-8.	Setup VMWare ESXi servers: `ansible-playbook ./Setup_ESXi.yml -i inventory`
-9.	Setup VMWare Cluster and vCenter Setup: `ansible-playbook ./Setup_vCenter.yml -i inventory`
+
+1.	Setup Pools in Intersight: `ansible-playbook ./create_pools.yml -i inventory`
+2.	Setup Policies in Intersight: `ansible-playbook ./create_server_policies.yml -i inventory`
+3.	Setup Server Profile Template(s) in Intersight: `ansible-playbook ./create_server_profile_template.yml -i inventory`
+4.	Setup LAN on Nexus: `ansible-playbook ./Setup_Nexus.yml -i inventory`
+5.	Setup MDS: `ansible-playbook ./Setup_MDS.yml -i inventory`
+6.	Setup Pure FlashArray: `ansible-playbook ./Setup_Pure.yml -i inventory`
+7.	Setup VMWare ESXi servers: `ansible-playbook ./Setup_ESXi.yml -i inventory`
+8.	Setup VMWare Cluster and vCenter Setup: `ansible-playbook ./Setup_vCenter.yml -i inventory`
