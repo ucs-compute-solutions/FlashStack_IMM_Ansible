@@ -6,7 +6,7 @@ This repository  contains Ansible playbooks to configure all the components of F
 &emsp;&emsp; •	Pure FlashArray   <br />
 &emsp;&emsp; •	VMware ESXi and VMware vCenter.  <br />
 
-This repository can be used to automate the Virtual Server Infrastrcutre Deployment incorporating the Cisco Unified Computing System™ (Cisco UCS®) X-Series modular platform, Cisco Unified Computing System™ 5th Generation Fabric Technology (5th Generation Fabric Interconnects 6536, 5th Generation Cisco UCS Virtual Interface Card and X9108-IFM-100G IFM) into the FlashStack Virtual Server Infrastructure (VSI) to enable end-to-end 100G Ethernet and 32G Fibre Channel. 
+This repository can be used to automate the Virtual Server Infrastrcutre Deployment incorporating the Cisco Unified Computing System™ (Cisco UCS®) **X-Series modular platform**, Cisco Unified Computing System™ **5th Generation Fabric Technology** (5th Generation Fabric Interconnects 6536, 5th Generation Cisco UCS Virtual Interface Card and X9108-IFM-100G IFM) into the FlashStack Virtual Server Infrastructure (VSI) to enable end-to-end 100G Ethernet and 32G Fibre Channel. 
 
 Details are covered in the following Cisco Validated Design (CVD): 
 
