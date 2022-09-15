@@ -1,0 +1,26 @@
+---
+- name: Adjust iSCSI A vSwitch - set MTU to '{{ iscsi_mtu }}'
+  community.vmware.vmware_vswitch:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ ansible_user }}'
+    password: '{{ ansible_ssh_pass }}'
+    validate_certs: false
+    esxi_hostname: '{{ inventory_hostname }}'
+    switch: '{{ iscsi_a_vswitch }}'
+    nics: '{{ iscsi_a_uplink }}'
+    mtu: '{{ iscsi_mtu }}'
+  delegate_to: localhost
+  when: configure_iscsi is defined
+
+- name: Create iSCSI B vSwitch - assign uplink '{{ iscsi_b_uplink }}' and set MTU to '{{ iscsi_mtu }}'
+  community.vmware.vmware_vswitch:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ ansible_user }}'
+    password: '{{ ansible_ssh_pass }}'
+    validate_certs: false
+    esxi_hostname: '{{ inventory_hostname }}'
+    switch: '{{ iscsi_b_vswitch }}'
+    nics: '{{ iscsi_b_uplink }}'
+    mtu: "{{ iscsi_mtu }}"
+  delegate_to: localhost
+  when: configure_iscsi is defined

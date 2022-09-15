@@ -1,0 +1,597 @@
+# This file defines the variables which are common across the entire setup.
+
+
+# Enter Intersight API Key ID and the location of the SecretKey file 
+api_key_id        : 62ec44e57564612d3350faa1/62ec4f4b7564612d32841a1e/630dfb9c7564612d3231270b
+api_private_key   : SecretKey.txt
+
+
+
+# Intersight Organization Name. Please make sure it already exists.
+org_name      : "AA03"
+
+
+ 
+# Prefix added to the pool/policy/profile configuration to eaisly identify items created by Ansible
+prefix        : FlashStack
+
+
+# Commenting out the following three variables will skip the iSCSI and/or FC configurations
+# Configure iSCSI policies and profiles only when the value is set to true
+
+configure_iscsi: 'true'
+
+
+# Configure Fibre Channel policies and profiles only when the value is set to true
+configure_fc: 'true'
+
+
+# Configure Fibre Channel NVMe vHBAs; only works when the configure_fc is set to true
+configure_fc_nvme: 'true'
+
+
+
+###############################################################################
+#
+# Server Configuration
+#
+##############################################################################
+
+# Server CPU Type - set to Intel or AMD
+server_cpu_type: "Intel"
+
+# VIC Type - set to 4G for 4th Gen VICs or 5G for 5th Gen VICs - Also add 4G or 5G to Server Profile Template Name
+vic_type: "5G"
+
+# UCS VIC Slot ID - Slot ID of the device. Supported values are ( 1 - 255, "MLOM", "L1", "L2" ) - Also add an indicator of this to FC and iSCSI LAN Connectivity Policy Names
+vic_slot_id: "MLOM"
+
+
+
+
+###############################################################################
+#
+# Various Pools
+#
+###############################################################################
+
+# Chassis Configuration - UUID Pool
+name_of_uuid_pool: '{{ prefix }}-UUID-Pool'
+uuid_prefix: 'AA030000-0000-0001'
+uuid_size: 50
+uuid_from: 'AA03-000000000001'
+
+
+
+# IP Address Pool for Management Access (in-band access)
+#
+name_of_ip_pool_for_management_access       : "{{ prefix }}-OOB-MGMT-IP-Pool"
+ip_pool_start_for_management_access         : 10.103.0.200
+size_of_ip_pool_for_management_access       : 20
+gateway_mgmt                                : 10.103.0.254
+netmask_mgmt                                : 255.255.255.0
+primary_dns_mgmt                            : 10.103.1.151
+secondary_dns_mgmt                          : 10.103.1.152
+
+
+# Separate MAC Address Pools for Fabric-A and Fabric-B
+#For FI-A
+name_of_mac_pool_on_fi_a          : "{{ prefix }}-Mac-Pool-A"
+mac_pool_start_on_fi_a            : "00:B4:AA:03:0A:00"
+size_of_mac_pool_on_fi_a          : 256
+
+# For FI-B
+name_of_mac_pool_on_fi_b          : "{{ prefix}}-Mac-Pool-B"
+mac_pool_start_on_fi_b            : "00:B4:AA:03:0B:00"
+size_of_mac_pool_on_fi_b          : 256
+
+
+# Fibre Channel Pools : only needed when configure_fc == 'true'
+#
+# WWNN Pool
+name_of_wwnn_pool               : "{{ prefix }}-WWNN-Pool"
+wwnn_pool_start                 : "20:00:00:B4:AA:03:00:00"
+wwnn_pool_size                  : 256
+#
+# WWPN Pool
+#
+#For FI-A
+name_of_wwpn_pool_san_a         : "{{ prefix }}-WWPN-Pool-A"
+wwpn_pool_start_on_san_a        : "20:00:00:B4:AA:03:0A:00"
+wwpn_pool_size_on_san_a         : 256
+#
+#For FI-B
+name_of_wwpn_pool_san_b         : "{{ prefix }}-WWPN-Pool-B"
+wwpn_pool_start_on_san_b        : "20:00:00:B4:AA:03:0B:00"
+wwpn_pool_size_on_san_b         : 256
+
+
+
+#
+# iSCSI Pools : only configured for iSCSI i.e. when configure_iscsi == 'true'
+#
+
+# IP Pool - iSCSI-A; Use 0.0.0.0 as gateway address if no gateway is present
+name_of_ip_pool_for_iscsi_a           : "{{ prefix }}-iSCSI-A-IP-Pool"
+ip_pool_start_iscsi_a                 : "192.168.31.101"
+size_of_ip_pool_iscsi_a               : 64
+gateway_iscsi_a                       : "0.0.0.0"
+netmask_iscsi_a                       : "255.255.255.0"
+
+# IP Pool - iSCSI-B; Use 0.0.0.0 as gateway address if no gateway is present
+name_of_ip_pool_for_iscsi_b           : "{{ prefix }}-iSCSI-B-IP-Pool"
+ip_pool_start_iscsi_b                 : "192.168.32.101"  
+size_of_ip_pool_iscsi_b               : 64
+gateway_iscsi_b                       : "0.0.0.0"
+netmask_iscsi_b                       : "255.255.255.0"
+
+# IQN Pool
+name_of_iqn_pool                      : "{{ prefix }}-IQN-Pool"
+prefix_for_iqn                        : "iqn.2010-11.com.flashstack"
+suffix_for_iqn                        : "aa03-ucshost"
+iqn_start                             : 01
+size_of_iqn_pool                      : 32
+
+
+
+
+
+###############################################################################
+#
+# Server Policies
+#
+###############################################################################
+# BIOS policies
+name_of_bios_policy        : "{{ prefix }}-{{ server_cpu_type }}-M6-Virt-BIOS"
+#
+# IMC Access Policy - Configures the KVM to be accessed In-Band
+# The in-band vlan must be enabled on the trunk between Nexus 9K and UCS FI
+name_of_imc_access_policy           : "{{ prefix }}-IMC-Access-Policy"
+vlan_for_cimc_access                : 1030
+
+# KVM Access Policy - Enables (true) or disables (false) Tunneled KVM Server Access
+# Ensure the Intersight Account allows Tunneled KVM> To enable Tunneled KVM for 
+# account,  go to Settings > Security and Privacy and enable Tunneled KVM settings
+name_of_kvm_policy                  : "{{ prefix }}-KVM-Policy"
+enable_tunneled_kvm                 : 'true'
+
+# Virtual Media Policy - enables mounting ISO files using KVM 
+name_of_vmedia_policy                 : "{{ prefix }}-KVM-Mount-vMedia"
+
+# IPMI over LAN Policy 
+name_of_ipmi_policy                 : "{{ prefix }}-Enable-IPMIoLAN-Policy"
+
+# Local User Policy to enable KVM and IPMI Access
+name_of_LocalUser_policy            : "{{ prefix }}-LocalUser-Policy"
+
+# Ethernet QoS Policy to set MTU 9000 and QoS Best Effort;
+# QoS values can be updated in roles/create_server_policies/defaults/main.yml
+name_of_ethernet_qos_policy         : "{{ prefix }}-EthernetQoS-Policy"
+
+# Ethernet Network Control Policy to enable CDP and LLDP
+name_of_ethernet_network_control_policy         : "{{ prefix }}-Enable-CDP-LLDP-Policy"
+
+# Default Ethernet Adapter Policy for VMware
+# Various values can be updated under roles/create_server_policies/defaults/main.yml
+name_of_ethernet_adapter_vmware_policy  : "{{ prefix }}-EthAdapter-VMware-Policy"
+
+# Ethernet High Traffic Adapter Policy
+# Various values can be updated under roles/create_server_policies/defaults/main.yml
+name_of_ethernet_adapter_hightrf_policy  : "{{ prefix }}-EthAdapter-VMware-HighTrf"
+
+# Ethernet 16 RX Queues VIC Adapter Policy
+# Various values can be updated under roles/create_server_policies/defaults/main.yml
+name_of_ethernet_adapter_16rxq_policy  : "{{ prefix }}-EthAdapter-16RXQs-{{ vic_type }}"
+
+# Ethernet Network Group Policy - VLAN details of vNICs assigned to virtual switches for Management
+name_of_network_group_policy_for_management         : "{{ prefix }}-vSwitch0-NetGrp-Policy"
+native_vlan_for_mgmt_vnic                           : 1
+allowed_vlans_for_mgmt_vnic                         : "1030,1031"
+
+
+# Ethernet Network Group Policy - VLANs details of vNIC assigned to vDS for vMotion, VM-Traffic, and optional Infra-NFS VLANs
+name_of_network_group_policy_for_vds          : "{{ prefix }}-vDS0-NetGrp-Policy"
+native_vlan_for_vds_vnic                      : 1
+allowed_vlans_for_vds_vnic                    : "1031,1032,3319"
+
+# Ethernet Network Group Policies for iSCSI interfaces (only required when configure_iscsi== true) 
+# Ignore the configuration for iSCSI-A and iSCSI-B Network Group policies if iSCSI is not configured
+
+# Ethernet Network Group Policy - VLAN details of iscsi-a vNIC Interface
+# iSCSI-A VLAN will be set as Native VLAN - NVMe-TCP-A VLAN Added
+name_of_network_group_policy_for_iscsi_a                : "{{ prefix }}-iSCSI-A-NetGrp-Policy"
+native_vlan_for_iscsi_a_vnic                            : 3119
+allowed_vlans_for_iscsi_a_vnic                          : "3119"
+
+
+# Ethernet Network Group Policy - VLAN details of iscsi-b vNIC Interface
+# iSCSI-B allowed VLAN will be set as Native VLAN - NVMe-TCP-B VLAN Added
+name_of_network_group_policy_for_iscsi_b                : "{{ prefix }}-iSCSI-B-NetGrp-Policy"
+native_vlan_for_iscsi_b_vnic                            : 3219
+allowed_vlans_for_iscsi_b_vnic                          : "3219"
+
+
+# LAN Connectivity Policy
+# 4 interfaces for all hosts. 2 additional interfaces for iSCSI boot from SAN
+
+# - Note -
+# In the current version of Ansible Playbooks, we require unique vNIC names when 
+# configuring both iSCSI and FC LAN connectivity policies
+
+#00-vSwitch0-i/fc-A: For Management mapped to FI-A
+#01-vSwitch0-i/fc-B: For Management mapped to FI-B
+#02-vDS0-i/fc-A: For vMotion and traffic mapped to FI-A
+#03-vDS0-i/fc-B: For vMotion and traffic mapped to FI-B
+
+name_of_iscsi_lan_connectivity_policy   : "{{ prefix }}-iSCSI-Boot-{{ vic_type }}-{{ vic_slot_id }}-LANCon"
+name_of_fc_lan_connectivity_policy      : "{{ prefix }}-FC-Boot-{{ vic_type }}-{{ vic_slot_id }}-LANCon"
+
+name_of_iscsi_vnic_1                       : "00-vSwitch0-i-{{ vic_type }}-{{ vic_slot_id }}-A"
+name_of_iscsi_vnic_2                       : "01-vSwitch0-i-{{ vic_type }}-{{ vic_slot_id }}-B"
+name_of_iscsi_vnic_3                       : "02-vDS0-i-{{ vic_type }}-{{ vic_slot_id }}-A"
+name_of_iscsi_vnic_4                       : "03-vDS0-i-{{ vic_type }}-{{ vic_slot_id }}-B"
+
+name_of_fc_vnic_1                             : "00-vSwitch0-fc-{{ vic_type }}-{{ vic_slot_id }}-A"
+name_of_fc_vnic_2                             : "01-vSwitch0-fc-{{ vic_type }}-{{ vic_slot_id }}-B"
+name_of_fc_vnic_3                             : "02-vDS0-fc-{{ vic_type }}-{{ vic_slot_id }}-A"
+name_of_fc_vnic_4                             : "03-vDS0-fc-{{ vic_type }}-{{ vic_slot_id }}-B"
+
+# Additional vNICs for iSCSI boot (only configured when configure_iscsi== true)
+#04-iSCSI-A: For iSCSI A traffic mapped to FI-A
+#05-iSCSI-B: For iSCSI B traffic mapped to FI-B
+
+name_of_iscsi_a_vnic                    : "04-iSCSI-{{ vic_type }}-{{ vic_slot_id }}-A"
+name_of_iscsi_b_vnic                    : "05-iSCSI-{{ vic_type }}-{{ vic_slot_id }}-B"
+
+
+# Boot mode for server. Either put Uefi or Legacy
+# UEFI secure boot true or false
+boot_mode                   : "Uefi"
+enable_uefi_secureboot      : 'true'
+
+
+# Boot LUN ID on Storage
+lun_id                      : 1
+
+
+
+#------------------------- FC Configurations ------------------------------
+# Boot Order Policy for Fibre Channel Boot
+fc_boot_order_policy_name         : "{{ prefix }}-FC-{{ vic_type }}-VIC-{{ vic_slot_id }}-Boot-Order-Policy"
+
+# Fibre Channel Network Policy: SAN-A
+name_of_fc_network_policy_san_a         : "{{ prefix}}-FC-Network-SAN-A"
+fcoe_vlan_id_SAN_A                      : 103
+vsan_id_SAN_A                           : 103
+
+# Fibre Channel Network Policy: SAN-B
+name_of_fc_network_policy_san_b         : "{{ prefix}}-FC-Network-SAN-B"
+fcoe_vlan_id_SAN_B                      : 104
+vsan_id_SAN_B                           : 104
+
+# Provide logical names to identify during boot
+san_boot_device_1a_name      : "fcp-lif-01a"
+san_boot_device_2a_name      : "fcp-lif-02a"
+san_boot_device_1b_name      : "fcp-lif-01b"
+san_boot_device_2b_name      : "fcp-lif-02b"
+
+# Provide Target WWPN Names
+san_boot_target_1a_wwpn      : "52:4a:93:7d:fe:fb:53:05"
+san_boot_target_2a_wwpn      : "52:4a:93:7d:fe:fb:53:15"
+san_boot_target_1b_wwpn      : "52:4a:93:7d:fe:fb:53:04"
+san_boot_target_2b_wwpn      : "52:4a:93:7d:fe:fb:53:14"
+
+# Fibre Channel QoS Policy
+name_of_fc_qos_policy         : "{{ prefix }}-FC-QoS-Policy"
+
+# Fibre Channel Adapter Policy
+name_of_fc_adapter_policy           : "{{ prefix }}-FC-Adapter-Policy"
+
+# FC-NVMe Initiator Adapter Policy
+name_of_fc_nvme_initiator_adapter_policy           : "{{ prefix }}-FC-NVMe-Initiator-Adapter-Policy"
+
+# SAN connectivity Policy
+name_of_san_connectivity_policy         : "{{ prefix }}-SANCon-{{ vic_type }}-VIC-{{ vic_slot_id }}"
+name_of_vhba_a                          : "FCP-{{ vic_type }}-{{ vic_slot_id }}-Fabric-A"
+name_of_vhba_b                          : "FCP-{{ vic_type }}-{{ vic_slot_id }}-Fabric-B"
+
+# Optional FC-NVMe Adapter Configuration
+name_of_nvme_vhba_a                     : "FC-NVMe-{{ vic_type }}-{{ vic_slot_id }}-Fabric-A"
+name_of_nvme_vhba_b                     : "FC-NVMe-{{ vic_type }}-{{ vic_slot_id }}-Fabric-B"
+
+#------------------------- iSCSI Configurations ------------------------------
+# Boot Order Policy for iSCSI Boot
+iscsi_boot_order_policy_name: "{{ prefix }}-iSCSI-{{ vic_type }}-VIC-{{ vic_slot_id }}-Boot-Order-Policy"
+
+# iSCSI Adapter Policy
+name_of_iscsi_adapter_policy: "{{ prefix }}-iSCSI-Adapter-Policy"
+tcp_connection_time_out   : 15
+dhcp_timeout              : 60
+lun_busy_retry_count      : 15
+
+# ISCSI Target Infomration 
+iscsi_StorageSystem_target_iqn: "iqn.2010-06.com.purestorage:flasharray.3e267744a0c0d7d5"
+iscsi_StorageSystem_port: 3260
+iscsi_StorageSystem_lunID: 1
+
+# iSCSI-A Primary Target Policy
+name_of_iscsi_a_primary_target_policy           : "{{ prefix }}-iSCSI-A-Primary-Target"
+target_ip_of_iscsi_a_primary                    : "192.168.31.4"
+
+# iSCSI-A Secondary Target Policy
+name_of_iscsi_a_secondary_target_policy         : "{{ prefix }}-iSCSI-A-Secondary-Target"
+target_ip_of_iscsi_a_secondary                  : "192.168.31.5"
+
+# iSCSI-B Primary Target Policy
+name_of_iscsi_b_primary_target_policy           : "{{ prefix }}-iSCSI-B-Primary-Target"
+target_ip_of_iscsi_b_primary                    : "192.168.32.4"
+
+# iSCSI-B Secondary Target Policy
+name_of_iscsi_b_secondary_target_policy         : "{{ prefix }}-iSCSI-B-Secondary-Target"
+target_ip_of_iscsi_b_secondary                  : "192.168.32.5"
+
+# iSCSI Boot Policies
+name_of_iscsi_a_boot_policy                     : "{{ prefix }}-iSCSI-A-Boot-Policy"
+name_of_iscsi_b_boot_policy                     : "{{ prefix }}-iSCSI-B-Boot-Policy"
+
+
+
+
+
+#------------------------- Server Profile ----------------------------------
+
+name_of_iscsi_SPT       : "{{ prefix }}-{{ server_cpu_type }}-{{ vic_type }}-VIC-{{ vic_slot_id }}-iSCSI-Boot-Template"
+name_of_fc_SPT          : "{{ prefix }}-{{ server_cpu_type }}-{{ vic_type }}-VIC-{{ vic_slot_id }}-FC-Boot-Template"
+
+
+
+###############################################################################
+#
+# FlashArray Configuration
+#
+##############################################################################
+
+# Initial FlashArray Configuration, only define this if initial Pure FlashArray setup is required
+# initial_fa_config: "yes"
+
+
+# Uncomment and update the the following line to setup Timezone
+time_zone: 'America/New_York'
+
+
+# FC-NVMe Configuration, only define this if configure_fc is defined and fc-nvme configuration is required
+# ESXi does not support presenting VMFS storage via more than one protocol, so enabling NVMe will override FC connectivity
+# Creating a multi-protocol host object should be avoided on the FlashArray when in use with VMware ESXi
+# configure_nvme: "yes"
+
+
+
+###############################################################################
+#
+# Nexus and MDS  Configuration
+#
+##############################################################################
+
+# Uncomment and update the the following lines to setup NTP Server(s)
+# Note that we are setting up NTP Distribution on the Nexus switches and these are the two Nexus mgmt0 IP addresses that will be used for the other FlashStack equipment.
+ntp_servers:
+  - ip_address: "10.103.0.3"
+  - ip_address: "10.103.0.4"
+
+ib_mgmt_ntp_servers:                # To be used by ESXi hosts and VMs
+  - ip_address: "10.103.1.3"
+  - ip_address: "10.103.1.4"
+  #10.103.1.127
+
+ntp_distribution_nm_cidr: 24
+
+# Uncomment and update the the following lines to setup DNS Server(s)
+dns_servers:
+  - ip_address: "10.103.1.151"
+  - ip_address: "10.103.1.152"
+
+# DNS Domain Name
+dns_domain_name: "flashstack.local"
+
+
+
+# VLAN Names are adjustable and can be modified in here
+#
+native_vlan_name: 'Native-Vlan'  # Native VLAN
+oob_vlan_name: 'OOB-MGMT-VLAN'  # Out of Band Mgmt VLAN
+ib_vlan_name: 'IB-MGMT-VLAN'  # IN BAND Management VLAN
+vm_vlan_name: 'VM-Traffic-VLAN'  # VLAN to carry VM traffic on VDS
+vmotion_vlan_name: 'vMotion-VLAN'  # vMotion VLAN
+iscsiA_vlan_name: 'iSCSI-A-VLAN'  # iSCSI-A VLAN (if needed)
+iscsiB_vlan_name: 'iSCSI-B-VLAN'  # iSCSI-B VLAN (if needed)
+#
+# lan_state should be set to 'present' to configure the objects
+# In future, this parameter will be used for deleting the configuration
+#
+lan_state: 'present'
+#
+vlan_list:
+  - name: "{{ native_vlan_name }}"
+    id: '3'
+    native: 'yes'
+    state: "{{lan_state}}"
+  - name: "{{ oob_vlan_name }}"
+    id: '1030'
+    native: 'no'
+    state: "{{lan_state}}"
+  - name: "{{ ib_vlan_name }}"
+    id: '1031'
+    native: 'no'
+    state: "{{lan_state}}"
+  - name: "{{ vm_vlan_name }}"
+    id: '1032'
+    native: 'no'
+    state: "{{lan_state}}"
+  - name: "{{ vmotion_vlan_name }}"
+    id: '3319'
+    native: 'no'
+    state: "{{lan_state}}"
+    # ISCSI A and B VLANs should be deleted or commended out for Fiber-Channel-Only deployments
+  - name: "{{ iscsiA_vlan_name }}"
+    id: '3119'
+    native: 'no'
+    state: "{{lan_state}}"
+    to_storage: 'yes'
+    storage_protocol: 'iSCSI'
+  - name: "{{ iscsiB_vlan_name }}"
+    id: '3219'
+    native: 'no'
+    state: "{{lan_state}}"
+    to_storage: 'yes'
+    storage_protocol: 'iSCSI'
+
+#
+# VLANs definition below will be used to setup trunk ports on Nexus Switches
+# all_vlans_list: for vpc_peer_link and UCS FI trunk ports
+all_vlans_list: "1030,1031,1032,3119,3219,3319"
+
+# storage_vlans_list: for storage ports
+storage_vlans_list: "3119,3219"
+
+# mgmt_vlans_list: for management switch trunk port
+mgmt_vlans_list: "1030,1031"
+
+
+iscsi_vlan_a: "3119"
+iscsi_vlan_b: "3219"
+native_vlan_id: "3"
+
+
+#
+# VSAN Parameters
+#
+vsan_list:
+  - name: 'FlashStack-Fabric-A'
+    vsan_id: '103'
+    fcoe_vlan: '103'
+    fabric: 'A'
+  - name: 'FlashStack-Fabric-B'
+    vsan_id: '104'
+    fcoe_vlan: '104'
+    fabric: 'B'
+
+
+#
+#
+# Storage FC WWPNs (capture from storage system)
+#
+fcp_ct0_fc0: '52:4a:93:7d:fe:fb:53:05'
+fcp_ct1_fc0: '52:4a:93:7d:fe:fb:53:15'
+fcp_ct0_fc2: '52:4a:93:7d:fe:fb:53:04'
+fcp_ct1_fc2: '52:4a:93:7d:fe:fb:53:14'
+
+
+#
+# Storage FC-NVMe WWPNs (capture from storage system)
+#
+fcp_ct0_fc1: '52:4a:93:7d:fe:fb:53:07'
+fcp_ct1_fc1: '52:4a:93:7d:fe:fb:53:17'
+fcp_ct0_fc3: '52:4a:93:7d:fe:fb:53:06'
+fcp_ct1_fc3: '52:4a:93:7d:fe:fb:53:16'
+
+
+#
+# UCS FC WWPNs (capture from the UCS Service Profiles)
+#
+ucs_host_01_a: '20:00:00:b4:aa:03:0a:00'
+ucs_host_01_b: '20:00:00:b4:aa:03:0b:00'
+#
+ucs_host_02_a: '20:00:00:b4:aa:03:0a:02'
+ucs_host_02_b: '20:00:00:b4:aa:03:0b:02'
+#
+ucs_host_03_a: '20:00:00:b4:aa:03:0a:05'
+ucs_host_03_b: '20:00:00:b4:aa:03:0b:04'
+
+
+#
+# UCS FC-NVMe WWPNs (capture from the UCS Service Profiles)
+#
+ucs_nvme_host_01_a: '20:00:00:b4:aa:03:0a:01'
+ucs_nvme_host_01_b: '20:00:00:b4:aa:03:0b:01'
+#
+ucs_nvme_host_02_a: '20:00:00:b4:aa:03:0a:03'
+ucs_nvme_host_02_b: '20:00:00:b4:aa:03:0b:03:02'
+#
+ucs_nvme_host_03_a: '20:00:00:b4:aa:03:0a:04'
+ucs_nvme_host_03_b: '20:00:00:b4:aa:03:0b:05'
+#
+#
+
+
+
+
+###############################################################################
+#
+# VMware Configurations
+#
+###############################################################################
+
+
+# Provide the user names and passwords to connect to the ESXi ntp_servers
+# and VMware vCenter
+#
+esxi_username: root
+esxi_password: H1ghV0lt
+
+
+vcenter_hostname: 10.103.1.100
+vcenter_username: administrator@vsphere.local
+vcenter_password: H1ghV0lt!
+
+
+vcenter_dc: 'Pani-FlashStack-DC'
+vcenter_cluster: 'Pani-FlashStack-Management'
+
+
+#
+# DVS Parameters; user version 7.0.0 for VMware 7.0U2 or above
+#
+dvs_name: "AA03-VDS0"
+dv_version: "7.0.3"
+dv_uplink: "2"
+dv_protocol: "lldp"
+dv_operation: "both"
+# vMotion_vlan_list: "1130"
+vMotion_vlan_list:
+  - name: "{{ vmotion_vlan_name }}"
+    # portgroup name will be configured in VMware
+    portgroup_name: "{{ vmotion_portgroup }}"
+    id: '3319'
+
+
+# Storage iSCSI Target Interfaces
+#
+iscsi_ct0_a: '192.168.31.4'
+iscsi_ct0_b: '192.168.32.4'
+iscsi_ct1_a: '192.168.31.5'
+iscsi_ct1_b: '192.168.32.5'
+
+
+
+#
+vmotion_portgroup: "vMotion"
+vm_traffic_portgroup: "VM-Traffic"
+#
+
+
+
+vds_vlan_list:
+  - name: "{{ vm_vlan_name }}"
+    # portgroup name will be configured in VMware
+    portgroup_name: "{{ vm_traffic_portgroup }}"
+    id: '1032'
+    active_uplinks:
+      - "Uplink 1"
+      - "Uplink 2"
+    standby_uplinks: []
+  - name: "{{ vmotion_vlan_name }}"
+    # portgroup name will be configured in VMware
+    portgroup_name: "{{ vmotion_portgroup }}"
+    id: '3319'
+    active_uplinks: "Uplink 2"
+    standby_uplinks: "Uplink 1"

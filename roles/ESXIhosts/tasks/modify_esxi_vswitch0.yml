@@ -1,0 +1,27 @@
+---
+- name: Add redundant uplinks and update MTU to 9000 on vSwitch0
+  community.vmware.vmware_vswitch:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ ansible_user }}'
+    password: '{{ ansible_ssh_pass }}'
+    validate_certs: false
+    esxi_hostname: '{{ inventory_hostname }}'
+    switch: "vSwitch0"
+    nics:
+      - '{{ mgmt_uplink1 }}'
+      - '{{ mgmt_uplink2 }}'
+    mtu: 9000
+  delegate_to: localhost
+
+
+- name: Remove default port group from install
+  community.vmware.vmware_portgroup:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ ansible_user }}'
+    password: '{{ ansible_ssh_pass }}'
+    validate_certs: false
+    esxi_hostname: '{{ inventory_hostname }}'
+    switch: "vSwitch0"
+    portgroup: "VM Network"
+    state: absent
+  delegate_to: localhost

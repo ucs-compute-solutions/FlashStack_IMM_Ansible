@@ -1,0 +1,17 @@
+---
+# vars file for MDS
+
+# List of features to be enabled.  By defaul npiv and fport-channel-trunk are enabled
+enabled_mds_features:
+  - npiv
+  - fport-channel-trunk
+  - nxapi
+  - analytics
+  - http-server
+  - isapi
+  - sshServer
+  - sftpServer
+
+global_settings:
+  - clock timezone EST -5 0
+  - clock summer-time EDT 2 Sunday March 02:00 1 Sunday November 02:00 60

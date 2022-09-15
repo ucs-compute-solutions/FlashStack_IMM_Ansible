@@ -1,0 +1,64 @@
+---
+  - name: "Create MAC Address Pool for FI-A"
+    vars:
+      api_info: &api_info_fi_a
+        api_private_key: "{{ api_private_key }}"
+        api_key_id: "{{ api_key_id }}"
+        api_uri: "{{ api_uri | default(omit) }}"
+        validate_certs: "{{ validate_certs | default(omit) }}"
+        state: "{{ state | default(omit) }}"
+
+      mac_block_fi_a: {
+        "From": "{{ mac_pool_start_on_fi_a }}",
+        "Size": "{{ size_of_mac_pool_on_fi_a }}"
+       }
+
+    cisco.intersight.intersight_rest_api:
+      <<: *api_info_fi_a
+      resource_path: /macpool/Pools
+      query_params:
+         $filter: "Name eq '{{ name_of_mac_pool_on_fi_a }}'"
+      api_body: {
+        "Name": "{{ name_of_mac_pool_on_fi_a }}",
+        "Description": "{{ description_of_mac_pool_on_fi_a }}",
+
+        "Organization": {
+           "Moid": "{{ intersight_org.api_response.Moid }}"
+         },
+        Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+        "AssignmentOrder": "default",
+        "MacBlocks": [ "{{ mac_block_fi_a }}" ],
+       }
+    register: mac_pool_fi_a
+
+
+
+  - name: "Create MAC Address Pool for FI-B"
+    vars:
+      api_info: &api_info_fi_b
+        api_private_key: "{{ api_private_key }}"
+        api_key_id: "{{ api_key_id }}"
+        api_uri: "{{ api_uri | default(omit) }}"
+        validate_certs: "{{ validate_certs | default(omit) }}"
+        state: "{{ state | default(omit) }}"
+      mac_block_fi_b: {
+        "From": "{{ mac_pool_start_on_fi_b }}",
+        "Size": "{{ size_of_mac_pool_on_fi_b }}"
+       }
+
+    cisco.intersight.intersight_rest_api:
+      <<: *api_info_fi_b
+      resource_path: /macpool/Pools
+      query_params:
+         $filter: "Name eq '{{ name_of_mac_pool_on_fi_b }}'"
+      api_body: {
+        "Name": "{{ name_of_mac_pool_on_fi_b }}",
+        "Description": "{{ description_of_mac_pool_on_fi_b }}",
+        "Organization": {
+           "Moid": "{{ intersight_org.api_response.Moid }}"
+         },
+        Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+        "AssignmentOrder": "default",
+        "MacBlocks": [ "{{ mac_block_fi_b }}" ],
+       }
+    register: mac_pool_fi_b

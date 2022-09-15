@@ -1,0 +1,10 @@
+---
+- name: Set ESXi Power Management Policy to High-Performance
+  community.vmware.vmware_host_powermgmt_policy:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ ansible_user }}'
+    password: '{{ ansible_ssh_pass }}'
+    validate_certs: false
+    esxi_hostname: '{{ inventory_hostname }}'
+    policy: high-performance
+  delegate_to: localhost

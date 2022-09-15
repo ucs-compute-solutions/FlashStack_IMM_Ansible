@@ -1,0 +1,14 @@
+---
+# Create IB-MGMT Portgroup - Note that vlan_id is set to 0
+# since the IB-MGMT VLAN is set as native VLAN on the vSwitch0 vnic.
+- name: Create IB-MGMT Portgroup
+  community.vmware.vmware_portgroup:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ ansible_user }}'
+    password: '{{ ansible_ssh_pass }}'
+    validate_certs: false
+    esxi_hostname: '{{ inventory_hostname }}'
+    switch: "vSwitch0"
+    portgroup: "IB-MGMT Network"
+    vlan_id: '0'
+  delegate_to: localhost

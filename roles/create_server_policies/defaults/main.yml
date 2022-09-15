@@ -1,0 +1,125 @@
+# This file defines various default values used by server policies 
+# These values typically do not need to changes but can be modified depending on customer deployments
+
+# BIOS policies
+description_of_bios_policy : "BIOS Policy for Performance Optimized {{ server_cpu_type }}-based M6 ESXi Servers"
+
+# IMC Access Policy
+description_of_imc_access_policy    : "IMC Access Policy for KVM Access"
+
+# KVM Policy
+description_of_kvm_policy           : "KVM Policy to set Tunneled KVM to {{enable_tunneled_kvm}}"
+
+# vMedia Policy
+description_of_vmedia_policy        : "vMedia Policy to enable KVM mounted DVDs"
+
+# FC Boot Order Policy (if required)
+fc_boot_order_policy_description    : "Fibre Channel Boot Order Policy - VIC-slot-{{ vic_slot_id }}"
+
+#iSCSI Boot Order Policy (if required)
+
+iscsi_boot_order_policy_description : "iSCSI Boot Order Policy - VIC-slot-{{ vic_slot_id }}"
+
+# IPMI over LAN Policy 
+description_of_ipmi_policy          : "Enable IPMI over LAN"
+
+# Local User Policy to enable KVM Access 
+description_of_LocalUser_policy      : "Allow Local Users in this policy KVM Access to Servers"
+
+# Ethernet QoS Policy
+description_of_ethernet_qos_policy   : "Ethernet QoS Policy setting MTU to 9000 and priority to Best Effort"
+mtu                                  : 9000
+class_of_service                     : 0
+burst                                : 10240
+priority                             : "Best Effort"
+rate_limit                           : 0
+
+# Ethernet Network Control Policy
+description_of_ethernet_network_control_policy  : "Ethernet Network Control Policy to enable CDP and LLDP"
+
+# Default Ethernet Adapter Policy for VMware
+description_of_ethernet_adapter_vmware_policy  : "Ethernet Adapter Policy for VMware - Platform defaults"
+vmware_number_of_interrupts    : 4
+vmware_receive_queue_count     : 1
+vmware_receive_ring_size       : 512
+vmware_transmit_queue_count    : 1
+vmware_transmit_ring_size      : 256
+vmware_completion_queue_count  : 2
+vmware_completion_ring_size    : 1
+
+# Ethernet Adapter Policy for VMware High Traffic Interface (Applies to vDS0)
+description_of_ethernet_adapter_hightrf_policy  : "Ethernet Adapter Policy for High Traffic"
+vmht_number_of_interrupts    : 11
+vmht_receive_queue_count     : 8
+vmht_receive_ring_size       : 4096
+vmht_transmit_queue_count    : 1
+vmht_transmit_ring_size      : 4096
+vmht_completion_queue_count  : 9
+vmht_completion_ring_size    : 1
+
+# Ethernet Adapter Policy for VMware 16 Rx Queues - 4th Gen VIC (Applies to iSCSI Boot/NVMe-TCP Interface)
+description_of_ethernet_adapter_16rxq4g_policy  : "Ethernet Adapter Policy for 16Rx Qs - 4th Gen VIC"
+vm164g_number_of_interrupts    : 19
+vm164g_receive_queue_count     : 16
+vm164g_receive_ring_size       : 4096
+vm164g_transmit_queue_count    : 1
+vm164g_transmit_ring_size      : 4096
+vm164g_completion_queue_count  : 17
+vm164g_completion_ring_size    : 1
+
+# Ethernet Adapter Policy for VMware 16 Rx Queues - 5th Gen VIC (Applies to iSCSI Boot/NVMe-TCP Interface)
+description_of_ethernet_adapter_16rxq5g_policy  : "Ethernet Adapter Policy for 16Rx Qs - 5th Gen VIC"
+vm165g_number_of_interrupts    : 19
+vm165g_receive_queue_count     : 16
+vm165g_receive_ring_size       : 16384
+vm165g_transmit_queue_count    : 1
+vm165g_transmit_ring_size      : 16384
+vm165g_completion_queue_count  : 17
+vm165g_completion_ring_size    : 1
+
+# Ethernet Network Group Policy - VLAN details of vNICs assigned to virtual switches for Management and NFS VLANs
+description_of_network_group_policy_for_management  : "VLAN details of vSwitch0 interfaces to allow Mgmt and NFS traffic"
+
+# Ethernet Network Group Policy - VLANs details of vNIC assigned to vDS for vMotion, NFS, and traffic VLANs
+description_of_network_group_policy_vds       : "VLAN details of vDS interfaces to allow vMotion, NFS, and VM traffic"
+
+# Ethernet Network Group Policy - VLAN details of iscsi-a vNIC Interface
+description_of_network_group_policy_for_iscsi_a         : "VLAN details of iscsi-a vNIC Interface; iSCSI-A VLAN {{ allowed_vlans_for_iscsi_a_vnic }} set as Native VLAN"
+
+# Ethernet Network Group Policy - VLAN details of iscsi-b vNIC Interface
+description_of_network_group_policy_for_iscsi_b         : "VLAN details of iscsi-b vNIC Interface; iSCSI-B VLAN {{ allowed_vlans_for_iscsi_b_vnic }} set as Native VLAN"
+
+# iSCSI Adapter Policy
+description_of_iscsi_adapter_policy: "iSCSI Adapter policy"
+
+# iSCSI Target Policies
+description_of_iscsi_a_primary_target_policy    : "iSCSI-A Primary Target Policy"
+description_of_iscsi_a_secondary_target_policy  : "iSCSI-A Secondary Target Policy"
+description_of_iscsi_b_primary_target_policy    : "iSCSI-B Primary Target Policy"
+description_of_iscsi_b_secondary_target_policy  : "iSCSI-B Secondary Target Policy"
+
+# iSCSI Boot Policies
+description_of_iscsi_a_boot_policy              : "iSCSI-A Boot Policy"
+description_of_iscsi_b_boot_policy              : "iSCSI-B Boot Policy"
+
+# LAN Connectivity Policies
+description_of_iscsi_lan_connectivity_policy    : "LAN Connectivity Policy for iSCSI boot from SAN - {{ vic_type }} VIC-slot-{{ vic_slot_id }}"
+description_of_fc_lan_connectivity_policy       : "LAN Connectivity Policy for FC boot from SAN  VIC-slot-{{ vic_slot_id }}"
+
+# Fibre Channel Network Policy: SAN-A
+description_of_fc_network_policy_san_a  : "SAN-A Fibre Channel Network Policy using VSAN {{ vsan_id_SAN_A }}"
+
+# Fibre Channel Network Policy: SAN-B
+description_of_fc_network_policy_san_b  : "SAN-B Fibre Channel Network Policy using VSAN {{ vsan_id_SAN_B }}"
+
+# Fibre Channel QoS Policy
+description_of_fc_qos_policy  : "Fibre Channel QoS policy with default values"
+
+# Fibre Channel Adapter Policy
+description_of_fc_adapter_policy    : "Fibre Channel Adapter policy with VMware platform defined default values"
+
+# FC-NVMe Initiator Adapter Policy
+description_of_fc_nvme_initiator_adapter_policy    : "FC-NVMe Initiator Adapter policy with platform defined default values"
+
+# SAN connectivity Policy
+description_of_san_connectivity_policy  : "SAN Connectivity Policy to add FC HBAs VIC-slot-{{ vic_slot_id }}"

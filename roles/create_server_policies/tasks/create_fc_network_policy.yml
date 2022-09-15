@@ -1,0 +1,59 @@
+---
+- name: "Configure Fibre Channel Network Policy for SAN-A"
+  vars:
+    api_info: &api_info_san-a
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+      <<: *api_info_san-a
+      resource_path: /vnic/FcNetworkPolicies
+      query_params:
+         $filter: "Name eq '{{ name_of_fc_network_policy_san_a }}'"
+      api_body: {
+        "Name": "{{ name_of_fc_network_policy_san_a }}",
+        "Description": "{{ description_of_fc_network_policy_san_a }}",
+
+        "Organization": {
+           "Moid": "{{ intersight_org.api_response.Moid }}"
+         },
+        Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+        "VsanSettings": {
+            "DefaultVlanId": "{{ fcoe_vlan_id_SAN_A }}",
+            "Id": "{{ vsan_id_SAN_A }}"
+         }
+       }
+  register: fc_network_policy_san_a
+
+
+- name: "Configure Fibre Channel Network Policy for SAN-B"
+  vars:
+    api_info: &api_info_san-b
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+      <<: *api_info_san-b
+      resource_path: /vnic/FcNetworkPolicies
+      query_params:
+         $filter: "Name eq '{{ name_of_fc_network_policy_san_b }}'"
+      api_body: {
+        "Name": "{{ name_of_fc_network_policy_san_b }}",
+        "Description": "{{ description_of_fc_network_policy_san_b }}",
+
+        "Organization": {
+           "Moid": "{{ intersight_org.api_response.Moid }}"
+         },
+        Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}] ,
+        "VsanSettings": {
+            "DefaultVlanId": "{{ fcoe_vlan_id_SAN_B }}",
+            "Id": "{{ vsan_id_SAN_B }}"
+         }
+       }
+  register: fc_network_policy_san_b

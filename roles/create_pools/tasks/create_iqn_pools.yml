@@ -1,0 +1,35 @@
+---
+- name: "Create IQN Pool"
+  vars:
+    api_info: &api_info
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+      <<: *api_info
+      resource_path: /iqnpool/Pools
+      query_params:
+         $filter: "Name eq '{{ name_of_iqn_pool }}'"
+      api_body: {
+        "Name": "{{ name_of_iqn_pool }}",
+        "Description": "{{ description_of_iqn_pool }}",
+
+        "Organization": {
+           "Moid": "{{ intersight_org.api_response.Moid }}"
+         },
+        Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+        "IqnSuffixBlocks": [
+          {
+          "Suffix": "{{ suffix_for_iqn }}",
+          "From": "{{ iqn_start }}",
+          "Size": "{{ size_of_iqn_pool }}"
+          }
+        ],
+        "Prefix": "{{ prefix_for_iqn }}",
+        "AssignmentOrder": "default"
+       }
+  # when: configure_iscsi == 'true'
+  register: iqn_pool

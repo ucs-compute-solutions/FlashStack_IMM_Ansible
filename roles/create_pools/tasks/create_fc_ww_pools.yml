@@ -1,0 +1,82 @@
+---
+- name: "Creating WWNN and WWPN Pools"
+  vars:
+    api_info: &api_info_fc
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+  block:
+  -   cisco.intersight.intersight_rest_api:
+          <<: *api_info_fc
+          resource_path: /fcpool/Pools
+          query_params:
+             $filter: "Name eq '{{ name_of_wwnn_pool }}'"
+          api_body: {
+            "Name": "{{ name_of_wwnn_pool }}",
+            "Description": "{{ description_of_wwnn_pool }}",
+
+            "Organization": {
+               "Moid": "{{ intersight_org.api_response.Moid }}"
+             },
+            Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+            "IdBlocks": [
+              {
+                 "From": "{{ wwnn_pool_start }}",
+                 "Size": "{{ wwnn_pool_size }}"
+              }
+             ],
+            "AssignmentOrder": "default",
+            "PoolPurpose": "WWNN"
+            }
+      register: wwnn_pool
+
+  -   cisco.intersight.intersight_rest_api:
+          <<: *api_info_fc
+          resource_path: /fcpool/Pools
+          query_params:
+             $filter: "Name eq '{{ name_of_wwpn_pool_san_a }}'"
+          api_body: {
+            "Name": "{{ name_of_wwpn_pool_san_a }}",
+            "Description": "{{ description_of_wwpn_pool_san_a }}",
+
+            "Organization": {
+               "Moid": "{{ intersight_org.api_response.Moid }}"
+             },
+            Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+            "IdBlocks": [
+              {
+                 "From": "{{ wwpn_pool_start_on_san_a }}",
+                 "Size": "{{ wwpn_pool_size_on_san_a }}"
+              }
+             ],
+            "AssignmentOrder": "default",
+            "PoolPurpose": "WWPN"
+            }
+      register: wwpn_pool_san_a
+
+
+  -   cisco.intersight.intersight_rest_api:
+          <<: *api_info_fc
+          resource_path: /fcpool/Pools
+          query_params:
+             $filter: "Name eq '{{ name_of_wwpn_pool_san_b }}'"
+          api_body: {
+            "Name": "{{ name_of_wwpn_pool_san_b }}",
+            "Description": "{{ description_of_wwpn_pool_san_b }}",
+
+            "Organization": {
+               "Moid": "{{ intersight_org.api_response.Moid }}"
+             },
+            Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+            "IdBlocks": [
+              {
+                 "From": "{{ wwpn_pool_start_on_san_b }}",
+                 "Size": "{{ wwpn_pool_size_on_san_b }}"
+              }
+             ],
+            "AssignmentOrder": "default",
+            "PoolPurpose": "WWPN"
+            }
+      register: wwpn_pool_san_b

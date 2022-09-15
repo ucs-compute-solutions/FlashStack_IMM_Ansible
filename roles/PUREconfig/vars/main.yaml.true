@@ -1,0 +1,55 @@
+---
+fa_url: 1.2.3.4
+fa_api: 899f0284-f25d-bc2d-15fd-7425f0bebd97
+
+array_name: acme-fa-1
+
+interfaces:
+  - ip: 1.3.3.2
+    port: ct0.eth4
+  - ip: 1.3.3.3
+    port: ct0.eth5
+  - ip: 1.3.3.4
+    port: ct1.eth4
+  - ip: 1.3.3.5
+    port: ct1.eth5
+
+iscsi_gateway: null
+iscsi_mtu: 9000
+
+dns_address:
+  - 8.8.8.8
+  - 8.8.4.4
+
+dns_domain: acme.com
+
+ntp_servers:
+  - ntp1.pool.org
+  - ntp2.pool.org
+
+phonehome: present
+remote_assist: enable
+
+proxy_server: relay.acme.com
+proxy_port:  80
+
+smtp_relay: smtp.acme.com
+smtp_domain: acme.com
+
+alert_address: alert@acme.com
+
+mgmt_ad_uri:
+  - "ldap://1.2.3.5"
+  - "ldap://1.2.3.6"
+mgmt_ad_base: "DC=acme,DC=lab"
+mgmt_ad_user: "svc.ldap"
+mgmt_ad_password: "P@ssw0rd!"
+
+ad_admin_base: "OU=Groups,OU=Acme Lab"
+ad_admin_group: "Acme Array Admins"
+ad_storage_base: null
+ad_storage_group: null
+ad_ops_base: null
+ad_ops_group: null
+ad_ro_base: "OU=Groups,OU=Acme Lab"
+ad_ro_group: "Acme Array ReadOnly"

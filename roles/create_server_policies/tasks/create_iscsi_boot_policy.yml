@@ -1,0 +1,84 @@
+---
+- name: "Configure iSCSI Boot Policies"
+  vars:
+    api_info: &api_info
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+  block:
+    - name: "iSCSI-A Boot Policy"
+      cisco.intersight.intersight_rest_api:
+        <<: *api_info
+        resource_path: /vnic/IscsiBootPolicies
+        query_params:
+           $filter: "Name eq '{{ name_of_iscsi_a_boot_policy }}'"
+        api_body: {
+          "Name": "{{ name_of_iscsi_a_boot_policy }}",
+          "Description": "{{ description_of_iscsi_a_boot_policy }}",
+
+          "Organization": {
+             "Moid": "{{ intersight_org.api_response.Moid }}"
+           },
+          Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+          "TargetSourceType": "Static",
+          "PrimaryTargetPolicy": "{{ iscsi_a_primary_target.api_response.Moid }}",
+          "SecondaryTargetPolicy": "{{ iscsi_a_secondary_target.api_response.Moid }}",
+          "IscsiAdapterPolicy": "{{ iscsi_adapter_policy.api_response.Moid }}",
+          "Chap": {
+              "UserId": "",
+              "Password": "",
+              "IsPasswordSet": false
+              },
+          "MutualChap": {
+              "UserId": "",
+              "Password": "",
+              "IsPasswordSet": false
+              },
+          "InitiatorIpSource": "Pool",
+          "InitiatorIpPool": "{{ iscsi_a_ip_pool_details.api_response.Moid }}",
+          "AutoTargetvendorName": "",
+          "InitiatorStaticIpV4Address": "",
+          "InitiatorStaticIpV4Config": null
+         }
+      register: iscsi_a_boot_policy
+
+
+
+    - name: "iSCSI-B Boot Policy"
+      cisco.intersight.intersight_rest_api:
+        <<: *api_info
+        resource_path: /vnic/IscsiBootPolicies
+        query_params:
+           $filter: "Name eq '{{ name_of_iscsi_b_boot_policy }}'"
+        api_body: {
+          "Name": "{{ name_of_iscsi_b_boot_policy }}",
+          "Description": "{{ description_of_iscsi_b_boot_policy }}",
+
+          "Organization": {
+             "Moid": "{{ intersight_org.api_response.Moid }}"
+           },
+          Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+          "TargetSourceType": "Static",
+          "PrimaryTargetPolicy": "{{ iscsi_b_primary_target.api_response.Moid }}",
+          "SecondaryTargetPolicy": "{{ iscsi_b_secondary_target.api_response.Moid }}",
+          "IscsiAdapterPolicy": "{{ iscsi_adapter_policy.api_response.Moid }}",
+          "Chap": {
+              "UserId": "",
+              "Password": "",
+              "IsPasswordSet": false
+              },
+          "MutualChap": {
+              "UserId": "",
+              "Password": "",
+              "IsPasswordSet": false
+              },
+          "InitiatorIpSource": "Pool",
+          "InitiatorIpPool": "{{ iscsi_b_ip_pool_details.api_response.Moid }}",
+          "AutoTargetvendorName": "",
+          "InitiatorStaticIpV4Address": "",
+          "InitiatorStaticIpV4Config": null
+         }
+      register: iscsi_b_boot_policy
+

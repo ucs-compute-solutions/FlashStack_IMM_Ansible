@@ -1,0 +1,41 @@
+---
+# Create Pools
+- name: "Create IMM Pools"
+  vars:
+    api_info: &api_info_org_moid
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+  intersight_rest_api:
+    <<: *api_info_org_moid
+    resource_path: /organization/Organizations
+    query_params:
+      $filter: "Name eq '{{ org_name }}'"
+  register: intersight_org
+  delegate_to: localhost
+  tags: always
+  run_once: true
+
+# Create IP Pool for Management
+- include_tasks: create_ip_pools.yml
+#
+# Create MAC Pools for FI-A and FI-B
+- include_tasks: create_mac_pools.yml
+#
+# Create UUID Pool
+- include_tasks: create_uuid_pool.yml
+#
+# Create IQN pool only if configure_iscsi value is set to true in group_vars/all.yml
+- include_tasks: create_iqn_pools.yml
+  when: configure_iscsi == 'true'
+#
+# Create iSCSI IP pools only if configure_iscsi value is set to true in group_vars/all.yml
+- include_tasks: create_iscsi_pools.yml
+#   when: configure_iscsi == 'true'
+#
+# Create FC WWN and WWPN pools only if configure_fc value is set to true in group_vars/all.yml
+- include_tasks: create_fc_ww_pools.yml
+  when: configure_fc == 'true'
+

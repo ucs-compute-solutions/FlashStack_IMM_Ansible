@@ -1,0 +1,38 @@
+---
+# ESXi hosts booted with the Cisco Custom ISO for ESXi 7.0U2 need
+# to have drivers either updated or installed.
+
+- name: Download nenic driver to tmp directory
+  command: wget {{ nenic_offline_bundle_url }} -P /tmp
+  args:
+    warn: false
+
+- name: Update nenic driver
+  command: esxcli software component apply -d /tmp/{{ nenic_filename }}
+  args:
+    warn: false
+
+- name: Download nfnic driver to tmp directory
+  command: wget {{ nfnic_offline_bundle_url }} -P /tmp
+  args:
+    warn: false
+
+- name: Update nfnic driver
+  command: esxcli software component apply -d /tmp/{{ nfnic_filename }}
+  args:
+    warn: false
+
+- name: Download UCS Tools driver to tmp directory
+  command: wget {{ UCS_Tools_url }} -P /tmp
+  args:
+    warn: false
+
+- name: Update UCS Tools driver
+  command: esxcli software component apply -d /tmp/{{ UCS_Tools_filename }}
+  args:
+    warn: false
+
+- name: Reboot Host
+  command: reboot
+  args:
+    warn: false

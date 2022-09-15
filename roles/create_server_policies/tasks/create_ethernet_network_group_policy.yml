@@ -1,0 +1,121 @@
+---
+- name: "Configure Ethernet Network Group Policy for Mgmt and NFS Access"
+  vars:
+    api_info: &api_info_mgmt
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+    <<: *api_info_mgmt
+    resource_path: /fabric/EthNetworkGroupPolicies
+    query_params:
+       $filter: "Name eq '{{ name_of_network_group_policy_for_management }}'"
+    api_body: {
+      "Name": "{{ name_of_network_group_policy_for_management }}",
+      "Description": "{{ description_of_network_group_policy_for_management }}",
+
+      "Organization": {
+         "Moid": "{{ intersight_org.api_response.Moid }}"
+       },
+      Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+      "VlanSettings": {
+         "NativeVlan": "{{ native_vlan_for_mgmt_vnic }}",
+         "AllowedVlans": "{{ allowed_vlans_for_mgmt_vnic }}"
+         }
+      }
+  register: management_network_group_policy
+
+
+- name: "Configure Ethernet Network Group Policy for vDS"
+  vars:
+    api_info: &api_info_vmotion
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+    <<: *api_info_vmotion
+    resource_path: /fabric/EthNetworkGroupPolicies
+    query_params:
+       $filter: "Name eq '{{ name_of_network_group_policy_for_vds }}'"
+    api_body: {
+      "Name": "{{ name_of_network_group_policy_for_vds }}",
+      "Description": "{{ description_of_network_group_policy_vds }}",
+
+      "Organization": {
+         "Moid": "{{ intersight_org.api_response.Moid }}"
+       },
+      Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+      "VlanSettings": {
+         "NativeVlan": "{{ native_vlan_for_vds_vnic }}",
+         "AllowedVlans": "{{ allowed_vlans_for_vds_vnic }}"
+         }
+      }
+  register: vmotion_network_group_policy
+
+
+- name: "Configure Ethernet Network Group Policy for iSCSI-A"
+  vars:
+    api_info: &api_info_iscsi_a
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+    <<: *api_info_iscsi_a
+    resource_path: /fabric/EthNetworkGroupPolicies
+    query_params:
+       $filter: "Name eq '{{ name_of_network_group_policy_for_iscsi_a }}'"
+    api_body: {
+      "Name": "{{ name_of_network_group_policy_for_iscsi_a }}",
+      "Description": "{{ description_of_network_group_policy_for_iscsi_a }}",
+
+      "Organization": {
+         "Moid": "{{ intersight_org.api_response.Moid }}"
+       },
+      Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+      "VlanSettings": {
+         "NativeVlan": "{{ native_vlan_for_iscsi_a_vnic }}",
+         "AllowedVlans": "{{ allowed_vlans_for_iscsi_a_vnic }}"
+         }
+      }
+  register: iscsi_a_network_group_policy
+  when: configure_iscsi == 'true'
+
+
+- name: "Configure Ethernet Network Group Policy for iSCSI-B"
+  vars:
+    api_info: &api_info_iscsi_b
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+    <<: *api_info_iscsi_b
+    resource_path: /fabric/EthNetworkGroupPolicies
+    query_params:
+       $filter: "Name eq '{{ name_of_network_group_policy_for_iscsi_b }}'"
+    api_body: {
+      "Name": "{{ name_of_network_group_policy_for_iscsi_b }}",
+      "Description": "{{ description_of_network_group_policy_for_iscsi_b }}",
+
+      "Organization": {
+         "Moid": "{{ intersight_org.api_response.Moid }}"
+       },
+      Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+      "VlanSettings": {
+         "NativeVlan": "{{ native_vlan_for_iscsi_b_vnic }}",
+         "AllowedVlans": "{{ allowed_vlans_for_iscsi_b_vnic }}"
+         }
+      }
+  register: iscsi_b_network_group_policy
+  when: configure_iscsi == 'true'

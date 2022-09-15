@@ -1,0 +1,220 @@
+---
+# Gather various policy details which will be used to map policies to Server Profile Templates
+#
+# Get UUID Pool for Service Profile Template
+- name: "Get UUID Pool Details"
+  vars:
+    api_info: &api_info_uuid
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+      <<: *api_info_uuid
+      resource_path: /uuidpool/Pools
+      query_params:
+         $filter: "Name eq '{{ name_of_uuid_pool }}'"
+
+  register: uuid_pool_details
+
+# Get BIOS Policy Details for Service Profile Template
+- name: "Get BIOS Policy Details"
+  vars:
+    api_info: &api_info_bios_policy
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  intersight_rest_api:
+    <<: *api_info_bios_policy
+    resource_path: /bios/Policies
+    query_params:
+      $filter: "Name eq '{{ name_of_bios_policy }}'"
+  register:  bios_policy_details
+
+# Get FC Boot Order Policy for Service Profile Template if FC is being configured
+- name: "Get FC Boot Order Policy Details"
+  vars:
+    api_info: &api_info_fc_boot_policy
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  intersight_rest_api:
+    <<: *api_info_fc_boot_policy
+    resource_path: /boot/PrecisionPolicies
+    query_params:
+      $filter: "Name eq '{{ fc_boot_order_policy_name }}'"
+
+  register:  fc_boot_order_policy_details
+  when: configure_fc == 'true'
+
+# Get iSCSI Boot Order Policy for Service Profile Template if iSCSI is being configured
+- name: "Get iSCSI Boot Order Policy Details"
+  vars:
+    api_info: &api_info_iscsi_boot_policy
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  intersight_rest_api:
+    <<: *api_info_iscsi_boot_policy
+    resource_path: /boot/PrecisionPolicies
+    query_params:
+      $filter: "Name eq '{{ iscsi_boot_order_policy_name }}'"
+  register:  iscsi_boot_order_policy_details
+  when: configure_iscsi == 'true' 
+
+# Get IMC Access Policy for Service Profile Template
+- name: "Get IMC Access Policy Details"
+  vars:
+    api_info: &api_info_imc_access
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  intersight_rest_api:
+    <<: *api_info_imc_access
+    resource_path: /access/Policies
+    query_params:
+      $filter: "Name eq '{{ name_of_imc_access_policy }}'"
+
+  register:  imc_access_policy_details
+
+# Get IPMI over LAN Policy for Service Profile Template
+- name: "Get IPMI over LAN Policy Details"
+  vars:
+    api_info: &api_info_ipmi
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  intersight_rest_api:
+    <<: *api_info_ipmi
+    resource_path: /ipmioverlan/Policies
+    query_params:
+      $filter: "Name eq '{{ name_of_ipmi_policy }}'"
+
+  register:  ipmi_policy_details
+
+# Get Local User Policy for Service Profile Template
+- name: "Get Local User Policy Details"
+  vars:
+    api_info: &api_info_LocalUser
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  intersight_rest_api:
+    <<: *api_info_LocalUser
+    resource_path: /iam/EndPointUserPolicies
+    query_params:
+      $filter: "Name eq '{{ name_of_LocalUser_policy }}'"
+
+  register:  local_user_policy_details
+
+# Get KVM Policy for Service Profile Template
+- name: "Get KVM Policy Details"
+  vars:
+    api_info: &api_info_kvm
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  intersight_rest_api:
+    <<: *api_info_kvm
+    resource_path: /kvm/Policies
+    query_params:
+      $filter: "Name eq '{{ name_of_kvm_policy }}'"
+
+  register:  kvm_policy_details
+
+# Get Virtual Media Policy for Service Profile Template
+- name: "Get Virtual Media Policy Details"
+  vars:
+    api_info: &api_info_vmedia
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  intersight_rest_api:
+    <<: *api_info_vmedia
+    resource_path: /vmedia/Policies
+    query_params:
+      $filter: "Name eq '{{ name_of_vmedia_policy }}'"
+
+  register:  vmedia_policy_details
+
+# Get FC LAN Connectivity Policy for Service Profile Template if iSCSI is being configured
+- name: "Get FC LAN Connectivity Policy Details"
+  vars:
+    api_info: &api_info_fc_lan_connectivity
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  intersight_rest_api:
+    <<: *api_info_fc_lan_connectivity
+    resource_path: /vnic/LanConnectivityPolicies
+    query_params:
+      $filter: "Name eq '{{ name_of_fc_lan_connectivity_policy }}'"
+
+  register:  fc_lan_connectivity_policy_details
+  when: configure_fc == 'true' 
+
+# Get iSCSI LAN Connectivity Policy for Service Profile Template if FC is being configured
+- name: "Get iSCSI LAN Connectivity Policy Details"
+  vars:
+    api_info: &api_info_iscsi_lan_connectivity
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  intersight_rest_api:
+    <<: *api_info_iscsi_lan_connectivity
+    resource_path: /vnic/LanConnectivityPolicies
+    query_params:
+      $filter: "Name eq '{{ name_of_iscsi_lan_connectivity_policy }}'"
+  register:  iscsi_lan_connectivity_policy_details
+  when: configure_iscsi == 'true' 
+
+# Get SAN Connectivity Policy for Service Profile Template if FC is being configured
+- name: "Get SAN Connectivity Policy Details"
+  vars:
+    api_info: &api_info_san_connectivity
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  intersight_rest_api:
+    <<: *api_info_san_connectivity
+    resource_path: /vnic/SanConnectivityPolicies
+    query_params:
+      $filter: "Name eq '{{ name_of_san_connectivity_policy }}'"
+
+  register:  san_connectivity_policy_details
+  when: configure_fc == 'true' 

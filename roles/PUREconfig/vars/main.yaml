@@ -1,0 +1,104 @@
+---
+
+fa_url: 10.103.0.55
+fa_api_token: a79ff29d-c416-a77d-f326-e91910cf1bde
+array_name: AA03-FA-170XL
+
+
+interfaces:
+  - ip: 192.168.31.4/24
+    port: ct0.eth10
+  - ip: 192.168.32.4/24
+    port: ct0.eth11
+  - ip: 192.168.31.5/24
+    port: ct1.eth10
+  - ip: 192.168.32.5/24
+    port: ct1.eth11
+
+
+iscsi_gateway: #none
+iscsi_mtu: 9000
+
+dns_address:
+  - 10.103.1.151
+  - 10.103.1.152
+
+
+
+dns_domain: flashstack.local
+
+ntp_servers:
+  - ntp1.pool.org
+  - ntp2.pool.org
+
+phonehome: present
+remote_assist: enable
+
+proxy_server: relay.flashstack.local
+proxy_port: 80
+
+smtp_relay: smtp.flashstack.local
+smtp_domain: flashstack.local
+
+alert_address: alert@flashstack.local
+
+mgmt_ad_uri:
+  - "ldap://1.2.3.5"
+  - "ldap://1.2.3.6"
+mgmt_ad_base: "DC=acme,DC=lab"
+mgmt_ad_user: "svc.ldap"
+mgmt_ad_password: "P@ssw0rd!"
+
+ad_admin_base: "OU=Groups,OU=Acme Lab"
+ad_admin_group: "Acme Array Admins"
+ad_storage_base: null
+ad_storage_group: null
+ad_ops_base: null
+ad_ops_group: null
+ad_ro_base: "OU=Groups,OU=Acme Lab"
+ad_ro_group: "Acme Array ReadOnly"
+esx_cluster_fcp: VM-Infra-FCP-Host-Group
+esx_cluster_iscsi: VM-Infra-iSCSI-Host-Group
+esx_cluster_nvme: VM-Infra-NVMe-Host-Group
+esx_hosts_iscsi:
+  VM-Infra-Host-iSCSI-01:
+    iqn: iqn.1998-01.com.vmware:esxi1-2bef2660
+    protocol: iscsi
+  VM-Infra-Host-iSCSI-02:
+    iqn: iqn.1998-01.com.vmware:esxi2-2ce296a0
+    protocol: iscsi
+  VM-Infra-Host-iSCSI-03:
+    iqn: iqn.1998-01.com.vmware:esxi3-28f0242c
+    protocol: iscsi
+esx_hosts_fc:
+  VM-Infra-Host-FCP-01:
+    wwns:
+      - 00:00:00:00:00:00:00:01
+      - 00:00:00:00:00:00:00:02
+    protocol: fc
+  VM-Infra-Host-FCP-02:
+    wwns:
+      - 00:00:00:00:00:00:00:03
+      - 00:00:00:00:00:00:00:04
+    protocol: fc
+  VM-Infra-Host-FCP-03:
+    wwns:
+      - 00:00:00:00:00:00:00:05
+      - 00:00:00:00:00:00:00:06
+    protocol: fc
+esx_hosts_nvme:
+  VM-Infra-Host-NVMe-01:
+    nqn: nqn.2014-08.com.cisco.flashstack:nvme:esxi-1
+    protocol: nvme
+  VM-Infra-Host-NVMe-02:
+    nqn: nqn.2014-08.com.cisco.flashstack:nvme:esxi-2
+    protocol: nvme
+  VM-Infra-Host-NVMe-03:
+    nqn: nqn.2014-08.com.cisco.flashstack:nvme:esxi-3
+    protocol: nvme
+datastore_count: 5
+datastore_swap: 1
+datastore_swap_size: 500G
+datastore_size: 1T
+bfs_size: 20G
+

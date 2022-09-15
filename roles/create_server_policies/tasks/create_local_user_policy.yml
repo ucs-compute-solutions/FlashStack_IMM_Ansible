@@ -1,0 +1,35 @@
+---
+- name: "Configure Local User Policy"
+  vars:
+    api_info: &api_info
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+    <<: *api_info
+    resource_path: /iam/EndPointUserPolicies
+    query_params:
+       $filter: "Name eq '{{ name_of_LocalUser_policy }}'"
+    api_body: {
+        "Name": "{{ name_of_LocalUser_policy }}",
+        "Description": "{{ description_of_LocalUser_policy }}",
+        "PasswordProperties": {
+          "ClassId": "iam.EndPointPasswordProperties",
+          "ObjectType": "iam.EndPointPasswordProperties",
+          "EnablePasswordExpiry": false,
+          "EnforceStrongPassword": true,
+          "ForceSendPassword": false,
+          "GracePeriod": 0,
+          "NotificationPeriod": 15,
+          "PasswordExpiryDuration": 90,
+          "PasswordHistory": 0
+        },
+        "Organization": {
+           "Moid": "{{ intersight_org.api_response.Moid }}"
+         },
+        Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}]
+     }
+  register: local_user_policy

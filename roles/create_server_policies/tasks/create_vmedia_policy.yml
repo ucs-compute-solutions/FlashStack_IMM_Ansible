@@ -1,0 +1,27 @@
+---
+- name: "Configure Virtual Media Policy"
+  vars:
+    api_info: &api_info
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+    <<: *api_info
+    resource_path: /vmedia/Policies
+    query_params:
+       $filter: "Name eq '{{ name_of_vmedia_policy }}'"
+    api_body: {
+        "Name": "{{ name_of_vmedia_policy }}",
+        "Description": "{{ description_of_vmedia_policy }}",
+        "Enabled": true,
+        "Encryption": true,
+        "LowPowerUsb": true,
+        "Organization": {
+           "Moid": "{{ intersight_org.api_response.Moid }}"
+         },
+        Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}]
+     }
+  register: kvm_policy

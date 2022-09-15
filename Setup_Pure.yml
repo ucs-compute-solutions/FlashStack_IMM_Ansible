@@ -1,0 +1,13 @@
+---
+# This Playbook is used to Configure FlashArray
+#
+- name: Configure Pure Storage Environment
+  hosts: localhost
+  collections:
+  - purestorage.flasharray
+  gather_facts: true
+  roles:
+    ### Configure Pure FlashArray
+    #
+    - PUREconfig
+    #

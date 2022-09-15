@@ -1,0 +1,17 @@
+---
+# Configure various ESXi host settings
+#
+# ESXi must have been installed and IP/Password/DNS/DNS Domain configured for mgmt access
+# SSH must be enabled on the ESXi host
+#
+# Add the NTP Server(s) to the ESXi Hosts
+- include_tasks: add_esxi_ntp.yml
+# Modify the vSwitch0 for ESXi Hosts to add redundant NIC and set MTU to 9000
+- include_tasks: modify_esxi_vswitch0.yml
+# Create the IB-MGMT Network Portgroup
+- include_tasks: create_esxi_ib_mgmt_PG.yml
+# Set ESXi Power Management Policy to High-Performance
+- include_tasks: set_esxi_powermgmt_policy.yml
+# Upgrade or Install VIC Drivers  and UCS Tools
+- include_tasks: upgrade_ESXi_drivers.yml
+#

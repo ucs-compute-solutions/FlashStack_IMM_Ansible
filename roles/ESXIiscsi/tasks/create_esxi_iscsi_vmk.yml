@@ -1,0 +1,38 @@
+---
+- name: Adjust iSCSI A adapter - set mtu to '{{ iscsi_mtu }}'
+  community.vmware.vmware_vmkernel:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ ansible_user }}'
+    password: '{{ ansible_ssh_pass }}'
+    validate_certs: false
+    esxi_hostname: '{{ inventory_hostname }}'
+    vswitch: '{{ iscsi_a_vswitch }}'
+    portgroup: '{{ iscsi_a_portgroup }}'
+    mtu: '{{ iscsi_mtu }}'
+    network:
+      type: 'static'
+      ip_address: '{{ iscsi_a_ip }}'
+      subnet_mask: '{{ iscsi_mask }}'
+      tcpip_stack: vmotion
+    state: present
+  delegate_to: localhost
+  when: configure_iscsi is defined
+
+- name: Create iSCSI B adapter - ip address '{{ iscsi_b_ip }}' MTU '{{ iscsi_mtu }}'
+  community.vmware.vmware_vmkernel:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ ansible_user }}'
+    password: '{{ ansible_ssh_pass }}'
+    validate_certs: false
+    esxi_hostname: '{{ inventory_hostname }}'
+    vswitch: '{{ iscsi_b_vswitch }}'
+    portgroup: '{{ iscsi_b_portgroup }}'
+    mtu: '{{ iscsi_mtu }}'
+    network:
+      type: 'static'
+      ip_address: '{{ iscsi_b_ip }}'
+      subnet_mask: '{{ iscsi_mask }}'
+      tcpip_stack: vmotion
+    state: present
+  delegate_to: localhost
+  when: configure_iscsi is defined

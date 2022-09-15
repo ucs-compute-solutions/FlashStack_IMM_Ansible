@@ -1,0 +1,227 @@
+---
+# - name: Configure Pure Storage Environment
+#  hosts: localhost
+#  collections:
+#  - purestorage.flasharray
+#  gather_facts: yes
+#  tasks:
+- name: Install purestorage python module
+  pip:
+    name:
+      - purestorage
+      - py-pure-client
+
+- name: Create infra datastore volumes
+  purefa_volume:
+    name: Infra-DataStore-{{ item }}
+    size: "{{ datastore_size }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ range(0, datastore_count)|list }}"
+
+- name: Create swap datastore volume
+  purefa_volume:
+    name: Infra-Swap{{ item }}
+    size: "{{ datastore_swap_size }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ range(0, datastore_swap)|list }}"
+  when: swap_datastore is defined
+
+- name: Create BFS volume - iSCSI
+  purefa_volume:
+    name: bfs_{{ item.key }}
+    size: "{{ bfs_size }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ esx_hosts_iscsi | dict2items }}"
+  when: configure_iscsi is defined
+
+- name: Create BFS volume - FC
+  purefa_volume:
+    name: bfs_{{ item.key }}
+    size: "{{ bfs_size }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ esx_hosts_fc | dict2items }}"
+  when: configure_fc is defined and configure_nvme is not defined
+
+- name: Create BFS volume - NVMe
+  purefa_volume:
+    name: bfs_{{ item.key }}
+    size: "{{ bfs_size }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ esx_hosts_nvme | dict2items }}"
+  when: configure_nvme is defined and configure_fc is not defined
+
+- name: Create new hostgroup - iSCSI
+  purefa_hg:
+    hostgroup: "{{ esx_cluster_iscsi }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: configure_iscsi is defined
+
+- name: Create new hostgroup - FC
+  purefa_hg:
+    hostgroup: "{{ esx_cluster_fcp }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: configure_fc is defined and configure_nvme is not defined
+
+- name: Create new hostgroup - NVMe
+  purefa_hg:
+    hostgroup: "{{ esx_cluster_nvme }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: configure_nvme is defined and configure_fc is not defined
+
+- name: Create hosts - iSCSI
+  purefa_host:
+    name: "{{ item.key }}"
+    protocol: "{{ item.value.protocol }}"
+    personality: esxi
+    iqn: "{{ item.value.iqn | default('') }}"
+    volume: bfs_{{ item.key }}
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ esx_hosts_iscsi | dict2items }}"
+  when: configure_iscsi is defined
+
+- name: Create hosts - FC
+  purefa_host:
+    name: "{{ item.key }}"
+    protocol: "{{ item.value.protocol }}"
+    personality: esxi
+    wwns: "{{ item.value.wwns | default('') }}"
+    volume: bfs_{{ item.key }}
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ esx_hosts_fc | dict2items }}"
+  when: configure_fc is defined and configure_nvme is not defined
+
+- name: Create hosts - NVMe
+  purefa_host:
+    name: "{{ item.key }}"
+    protocol: "{{ item.value.protocol }}"
+    personality: esxi
+    nqn: "{{ item.value.nqn | default('') }}"
+    volume: bfs_{{ item.key }}
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ esx_hosts_nvme | dict2items }}"
+  when: configure_nvme is defined
+
+- name: Add hosts to hostgroup - iSCSI
+  purefa_hg:
+    hostgroup: "{{ esx_cluster_iscsi }}"
+    host:
+      - "{{ item.key }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ esx_hosts_iscsi | dict2items }}"
+  when: configure_iscsi is defined
+
+- name: Add hosts to hostgroup - FC
+  purefa_hg:
+    hostgroup: "{{ esx_cluster_fcp }}"
+    host:
+      - "{{ item.key }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ esx_hosts_fc | dict2items }}"
+  when: configure_fc is defined and configure_nvme is not defined
+
+- name: Add hosts to hostgroup - NVMe
+  purefa_hg:
+    hostgroup: "{{ esx_cluster_nvme }}"
+    host:
+      - "{{ item.key }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ esx_hosts_nvme | dict2items }}"
+  when: configure_nvme is defined
+
+- name: Add datastore volume to hostgroup - iSCSI
+  purefa_hg:
+    hostgroup: "{{ esx_cluster_iscsi }}"
+    volume:
+      - Infra-DataStore-{{ item }}
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ range(0, datastore_count)|list }}"
+  when: configure_iscsi is defined
+
+- name: Add swap datastore volume to hostgroup - iSCSI
+  purefa_hg:
+    hostgroup: "{{ esx_cluster_iscsi }}"
+    volume:
+      - Infra-Swap{{ item }}
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ range(0, datastore_swap)|list }}"
+  when: configure_iscsi is defined and swap_datastore is defined
+
+- name: Add datastore volume to hostgroup - FC
+  purefa_hg:
+    hostgroup: "{{ esx_cluster_fcp }}"
+    volume:
+      - Infra-DataStore-{{ item }}
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ range(0, datastore_count)|list }}"
+  when: configure_fc is defined and configure_nvme is not defined
+
+- name: Add swap datastore volume to hostgroup - FC
+  purefa_hg:
+    hostgroup: "{{ esx_cluster_fcp }}"
+    volume:
+      - Infra-Swap{{ item }}
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ range(0, datastore_swap)|list }}"
+  when: configure_fc is defined and configure_nvme is not defined and swap_datastore is defined
+
+- name: Add datastore volume to hostgroup - NVMe
+  purefa_hg:
+    hostgroup: "{{ esx_cluster_nvme }}"
+    volume:
+      - Infra-DataStore-{{ item }}
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ range(0, datastore_count)|list }}"
+  when: configure_nvme is defined
+
+- name: Add swap datastore volume to hostgroup - NVMe
+  purefa_hg:
+    hostgroup: "{{ esx_cluster_nvme }}"
+    volume:
+      - Infra-Swap{{ item }}
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  loop: "{{ range(0, datastore_swap)|list }}"
+  when: configure_nvme is defined and swap_datastore is defined
+
+- name: Create VMware protocol endpoint - iSCSI
+  purefa_endpoint:
+    name: pure-protocol-endpoint
+    hgroup: "{{ esx_cluster_iscsi }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: configure_iscsi is defined
+
+- name: Create VMware protocol endpoint - FC
+  purefa_endpoint:
+    name: pure-protocol-endpoint
+    hgroup: "{{ esx_cluster_fcp }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: configure_fc is defined and configure_nvme is not defined
+
+- name: Create VMware protocol endpoint - NVMe
+  purefa_endpoint:
+    name: pure-protocol-endpoint
+    hgroup: "{{ esx_cluster_nvme }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: configure_nvme is defined and configure_fc is not defined

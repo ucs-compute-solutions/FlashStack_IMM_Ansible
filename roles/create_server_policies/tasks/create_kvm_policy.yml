@@ -1,0 +1,30 @@
+---
+- name: "Configure KVM Policy"
+  vars:
+    api_info: &api_info
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+    <<: *api_info
+    resource_path: /kvm/Policies
+    query_params:
+       $filter: "Name eq '{{ name_of_kvm_policy }}'"
+    api_body: {
+        "Name": "{{ name_of_kvm_policy }}",
+        "Description": "{{ description_of_kvm_policy }}",
+        "EnableLocalServerVideo": true,
+        "EnableVideoEncryption": true,
+        "Enabled": true,
+        "TunneledKvmEnabled": "{{enable_tunneled_kvm|bool}}",
+        "MaximumSessions": 4,
+        "RemotePort": 2068,
+        "Organization": {
+           "Moid": "{{ intersight_org.api_response.Moid }}"
+         },
+        Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}]
+     }
+  register: kvm_policy

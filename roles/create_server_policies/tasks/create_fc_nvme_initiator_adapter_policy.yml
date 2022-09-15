@@ -1,0 +1,58 @@
+---
+- name: "Configure FC-NVMe Initiator Adapter Policy"
+  vars:
+    api_info: &api_info
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+      <<: *api_info
+      resource_path: /vnic/FcAdapterPolicies
+      query_params:
+         $filter: "Name eq '{{ name_of_fc_nvme_initiator_adapter_policy }}'"
+      api_body: {
+        "Name": "{{ name_of_fc_nvme_initiator_adapter_policy }}",
+        "Description": "{{ description_of_fc_nvme_initiator_adapter_policy }}",
+        "Organization": {
+           "Moid": "{{ intersight_org.api_response.Moid }}"
+         },
+        "ErrorDetectionTimeout": 2000,
+           "ErrorRecoverySettings": {
+              "Enabled": false,
+              "PortDownTimeout": 10000,
+              "LinkDownTimeout": 30000,
+              "IoRetryTimeout": 5,
+              "IoRetryCount": 30
+           },
+           "FlogiSettings": {
+              "Retries": 8,
+              "Timeout": 4000
+           },
+           "InterruptSettings": {
+              "Mode": "MSIx"
+           },
+           "IoThrottleCount": 256,
+           "LunCount": 1024,
+           "LunQueueDepth": 20,
+           "PlogiSettings": {
+              "Retries": 8,
+              "Timeout": 20000
+           },
+           "ResourceAllocationTimeout": 10000,
+           "RxQueueSettings": {
+              "RingSize": 64
+           },
+           "ScsiQueueSettings": {
+              "Count": 16,
+              "RingSize": 512
+           },
+           Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+
+           "TxQueueSettings": {
+              "RingSize": 64
+           }
+       }
+  register: fc_nvme_initiator_adapter_policy

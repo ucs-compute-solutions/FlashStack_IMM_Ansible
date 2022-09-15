@@ -1,0 +1,14 @@
+./roles/create_server_policies/tasks/create_ethernet_adapter_policies.yml:              "Count": "{{ vm164g_completion_queue_count }}",
+./roles/create_server_policies/tasks/create_ethernet_adapter_policies.yml:              "RingSize": "{{ vm164g_completion_ring_size }}"
+./roles/create_server_policies/tasks/create_ethernet_adapter_policies.yml:              "Count": "{{ vm164g_number_of_interrupts }}",
+./roles/create_server_policies/tasks/create_ethernet_adapter_policies.yml:              "Count": "{{ vm164g_receive_queue_count }}",
+./roles/create_server_policies/tasks/create_ethernet_adapter_policies.yml:              "RingSize": "{{ vm164g_receive_ring_size }}"
+./roles/create_server_policies/tasks/create_ethernet_adapter_policies.yml:              "Count": "{{ vm164g_transmit_queue_count }}",
+./roles/create_server_policies/tasks/create_ethernet_adapter_policies.yml:              "RingSize": "{{ vm164g_transmit_ring_size }}"
+./roles/create_server_policies/defaults/main.yml:vm164g_number_of_interrupts    : 19
+./roles/create_server_policies/defaults/main.yml:vm164g_receive_queue_count     : 16
+./roles/create_server_policies/defaults/main.yml:vm164g_receive_ring_size       : 4096
+./roles/create_server_policies/defaults/main.yml:vm164g_transmit_queue_count    : 1
+./roles/create_server_policies/defaults/main.yml:vm164g_transmit_ring_size      : 4096
+./roles/create_server_policies/defaults/main.yml:vm164g_completion_queue_count  : 17
+./roles/create_server_policies/defaults/main.yml:vm164g_completion_ring_size    : 1

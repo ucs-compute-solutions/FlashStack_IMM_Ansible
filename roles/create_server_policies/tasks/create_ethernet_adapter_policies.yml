@@ -1,0 +1,295 @@
+---
+- name: "Configure Ethernet Adapter Policies"
+  vars:
+    api_info: &api_info
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+  block:
+  - name: "Configure Ethernet Adapter VMware Policy"
+    cisco.intersight.intersight_rest_api:
+      <<: *api_info
+      resource_path: /vnic/EthAdapterPolicies
+      query_params:
+        $filter: "Name eq '{{ name_of_ethernet_adapter_vmware_policy }}'"
+      api_body: {
+            "Name": "{{ name_of_ethernet_adapter_vmware_policy }}",
+            "Description": "{{ description_of_ethernet_adapter_vmware_policy }}",
+
+            "Organization": {
+              "Moid": "{{ intersight_org.api_response.Moid }}"
+            },
+            Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+            "AdvancedFilter": false,
+            "ArfsSettings": {
+                "Enabled": false
+            },
+            "CompletionQueueSettings": {
+              "Count": "{{ vmware_completion_queue_count }}",
+              "RingSize": "{{ vmware_completion_ring_size }}"
+            },
+            "GeneveEnabled": false,
+            "InterruptScaling": false,
+            "InterruptSettings": {
+              "Count": "{{ vmware_number_of_interrupts }}",
+              "Mode": "MSIx",
+              "CoalescingTime": 125,
+              "CoalescingType": "MIN"
+            },
+            "NvgreSettings": {
+              "Enabled": false
+            },
+
+            "RoceSettings": {
+              "Enabled": false
+            },
+            "RssHashSettings": {
+              "ClassId": "vnic.RssHashSettings",
+              "Ipv4Hash": true,
+              "Ipv6ExtHash": false,
+              "Ipv6Hash": true,
+              "ObjectType": "vnic.RssHashSettings",
+              "TcpIpv4Hash": true,
+              "TcpIpv6ExtHash": false,
+              "TcpIpv6Hash": true,
+              "UdpIpv4Hash": false,
+              "UdpIpv6Hash": false
+            },
+            "RssSettings": false,
+            "RxQueueSettings": {
+              "Count": "{{ vmware_receive_queue_count }}",
+              "RingSize": "{{ vmware_receive_ring_size }}"
+            },
+            "TcpOffloadSettings": {
+              "TxChecksum": true,
+              "RxChecksum": true,
+              "LargeSend": true,
+              "LargeReceive": true
+            },
+            "TxQueueSettings": {
+              "Count": "{{ vmware_transmit_queue_count }}",
+              "RingSize": "{{ vmware_transmit_ring_size }}"
+            },
+            "UplinkFailbackTimeout": 5,
+            "VxlanSettings": {
+              "Enabled": false
+            }
+        }
+    register: ethernet_adapter_vmware_policy
+
+  - name: "Configure Ethernet Adapter VMware High Traffic Policy"
+    cisco.intersight.intersight_rest_api:
+      <<: *api_info
+      resource_path: /vnic/EthAdapterPolicies
+      query_params:
+        $filter: "Name eq '{{ name_of_ethernet_adapter_hightrf_policy }}'"
+      api_body: {
+            "Name": "{{ name_of_ethernet_adapter_hightrf_policy }}",
+            "Description": "{{ description_of_ethernet_adapter_hightrf_policy }}",
+
+            "Organization": {
+              "Moid": "{{ intersight_org.api_response.Moid }}"
+            },
+            Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+            "AdvancedFilter": false,
+            "ArfsSettings": {
+                "Enabled": false
+            },
+            "CompletionQueueSettings": {
+              "Count": "{{ vmht_completion_queue_count }}",
+              "RingSize": "{{ vmht_completion_ring_size }}"
+            },
+            "GeneveEnabled": false,
+            "InterruptScaling": false,
+            "InterruptSettings": {
+              "Count": "{{ vmht_number_of_interrupts }}",
+              "Mode": "MSIx",
+              "CoalescingTime": 125,
+              "CoalescingType": "MIN"
+            },
+            "NvgreSettings": {
+              "Enabled": false
+            },
+
+            "RoceSettings": {
+              "Enabled": false
+            },
+            "RssHashSettings": {
+              "ClassId": "vnic.RssHashSettings",
+              "Ipv4Hash": true,
+              "Ipv6ExtHash": false,
+              "Ipv6Hash": true,
+              "ObjectType": "vnic.RssHashSettings",
+              "TcpIpv4Hash": true,
+              "TcpIpv6ExtHash": false,
+              "TcpIpv6Hash": true,
+              "UdpIpv4Hash": false,
+              "UdpIpv6Hash": false
+            },
+            "RssSettings": true,
+            "RxQueueSettings": {
+              "Count": "{{ vmht_receive_queue_count }}",
+              "RingSize": "{{ vmht_receive_ring_size }}"
+            },
+            "TcpOffloadSettings": {
+              "TxChecksum": true,
+              "RxChecksum": true,
+              "LargeSend": true,
+              "LargeReceive": true
+            },
+            "TxQueueSettings": {
+              "Count": "{{ vmht_transmit_queue_count }}",
+              "RingSize": "{{ vmht_transmit_ring_size }}"
+            },
+            "UplinkFailbackTimeout": 5,
+            "VxlanSettings": {
+              "Enabled": false
+            }
+        }
+    register: ethernet_adapter_hightrf_policy
+
+  - name: "Configure Ethernet Adapter VMware 16 Rx Qs - 4th Gen VIC Policy"
+    cisco.intersight.intersight_rest_api:
+      <<: *api_info
+      resource_path: /vnic/EthAdapterPolicies
+      query_params:
+        $filter: "Name eq '{{ name_of_ethernet_adapter_16rxq_policy }}'"
+      api_body: {
+            "Name": "{{ name_of_ethernet_adapter_16rxq_policy }}",
+            "Description": "{{ description_of_ethernet_adapter_16rxq4g_policy }}",
+
+            "Organization": {
+              "Moid": "{{ intersight_org.api_response.Moid }}"
+            },
+            Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+            "AdvancedFilter": false,
+            "ArfsSettings": {
+                "Enabled": false
+            },
+            "CompletionQueueSettings": {
+              "Count": "{{ vm164g_completion_queue_count }}",
+              "RingSize": "{{ vm164g_completion_ring_size }}"
+            },
+            "GeneveEnabled": false,
+            "InterruptScaling": false,
+            "InterruptSettings": {
+              "Count": "{{ vm164g_number_of_interrupts }}",
+              "Mode": "MSIx",
+              "CoalescingTime": 125,
+              "CoalescingType": "MIN"
+            },
+            "NvgreSettings": {
+              "Enabled": false
+            },
+
+            "RoceSettings": {
+              "Enabled": false
+            },
+            "RssHashSettings": {
+              "ClassId": "vnic.RssHashSettings",
+              "Ipv4Hash": true,
+              "Ipv6ExtHash": false,
+              "Ipv6Hash": true,
+              "ObjectType": "vnic.RssHashSettings",
+              "TcpIpv4Hash": true,
+              "TcpIpv6ExtHash": false,
+              "TcpIpv6Hash": true,
+              "UdpIpv4Hash": false,
+              "UdpIpv6Hash": false
+            },
+            "RssSettings": true,
+            "RxQueueSettings": {
+              "Count": "{{ vm164g_receive_queue_count }}",
+              "RingSize": "{{ vm164g_receive_ring_size }}"
+            },
+            "TcpOffloadSettings": {
+              "TxChecksum": true,
+              "RxChecksum": true,
+              "LargeSend": true,
+              "LargeReceive": true
+            },
+            "TxQueueSettings": {
+              "Count": "{{ vm164g_transmit_queue_count }}",
+              "RingSize": "{{ vm164g_transmit_ring_size }}"
+            },
+            "UplinkFailbackTimeout": 5,
+            "VxlanSettings": {
+              "Enabled": false
+            }
+        }
+    register: ethernet_adapter_16rxq4g_policy
+    when: vic_type == "4G"
+
+  - name: "Configure Ethernet Adapter VMware 16 Rx Qs - 5th Gen VIC Policy"
+    cisco.intersight.intersight_rest_api:
+      <<: *api_info
+      resource_path: /vnic/EthAdapterPolicies
+      query_params:
+        $filter: "Name eq '{{ name_of_ethernet_adapter_16rxq_policy }}'"
+      api_body: {
+            "Name": "{{ name_of_ethernet_adapter_16rxq_policy }}",
+            "Description": "{{ description_of_ethernet_adapter_16rxq5g_policy }}",
+
+            "Organization": {
+              "Moid": "{{ intersight_org.api_response.Moid }}"
+            },
+            Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+            "AdvancedFilter": false,
+            "ArfsSettings": {
+                "Enabled": false
+            },
+            "CompletionQueueSettings": {
+              "Count": "{{ vm165g_completion_queue_count }}",
+              "RingSize": "{{ vm165g_completion_ring_size }}"
+            },
+            "GeneveEnabled": false,
+            "InterruptScaling": false,
+            "InterruptSettings": {
+              "Count": "{{ vm165g_number_of_interrupts }}",
+              "Mode": "MSIx",
+              "CoalescingTime": 125,
+              "CoalescingType": "MIN"
+            },
+            "NvgreSettings": {
+              "Enabled": false
+            },
+
+            "RoceSettings": {
+              "Enabled": false
+            },
+            "RssHashSettings": {
+              "ClassId": "vnic.RssHashSettings",
+              "Ipv4Hash": true,
+              "Ipv6ExtHash": false,
+              "Ipv6Hash": true,
+              "ObjectType": "vnic.RssHashSettings",
+              "TcpIpv4Hash": true,
+              "TcpIpv6ExtHash": false,
+              "TcpIpv6Hash": true,
+              "UdpIpv4Hash": false,
+              "UdpIpv6Hash": false
+            },
+            "RssSettings": true,
+            "RxQueueSettings": {
+              "Count": "{{ vm165g_receive_queue_count }}",
+              "RingSize": "{{ vm165g_receive_ring_size }}"
+            },
+            "TcpOffloadSettings": {
+              "TxChecksum": true,
+              "RxChecksum": true,
+              "LargeSend": true,
+              "LargeReceive": true
+            },
+            "TxQueueSettings": {
+              "Count": "{{ vm165g_transmit_queue_count }}",
+              "RingSize": "{{ vm165g_transmit_ring_size }}"
+            },
+            "UplinkFailbackTimeout": 5,
+            "VxlanSettings": {
+              "Enabled": false
+            }
+        }
+    register: ethernet_adapter_16rxq5g_policy
+    when: vic_type == "5G"

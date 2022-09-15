@@ -1,0 +1,11 @@
+---
+# Creating server policies specific to Converged Infrastrucure stack. These policies are used
+# to configure the Server Profile Template(s)
+
+- name: "Conifgure IMM Server Policies"
+  hosts: localhost
+  gather_facts: no
+
+  # Create Various Server Policies
+  roles:
+    - role: create_server_policies

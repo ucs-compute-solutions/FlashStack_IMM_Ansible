@@ -1,0 +1,68 @@
+---
+backup_dir: "~/"
+#
+enabled_features:
+  - lacp
+  - vpc
+  - interface-vlan
+  - nxapi
+  - udld
+  - lldp
+#
+global_settings:
+  - spanning-tree port type network default
+  - spanning-tree port type edge bpduguard default
+  - spanning-tree port type edge bpdufilter default
+  - port-channel load-balance src-dst l4port
+  - system default switchport
+  - system default switchport shutdown
+  - clock timezone EST -5 0
+  - clock summer-time EDT 2 Sunday March 02:00 1 Sunday November 02:00 60
+
+#
+global_NTP_servers:
+  - 172.20.10.11
+  - 172.20.10.12
+ntp_distribution_vlan: '1031'  # VLAN (IB-MGMT/Baremetal) where NTP distribution interfaces will be placed.
+ntp_distribution_gw: '10.103.1.254'  # Default gateway for NTP distribution interfaces.
+#
+
+
+uplink_PC:
+  - interface: "port-channel103"
+    # id must be same as port-channel number
+    id: "103"
+    speed: "auto"
+    duplex: "full"
+    description: "MGMT-Uplink"
+#
+peerlink_PC:
+  - interface: "port-channel10"
+    # id must be same as port-channel number
+    id: "10"
+    speed: "auto"
+    duplex: "full"
+    description: "vPC Peer Link"
+#
+FI_A_PC:
+  - interface: "port-channel11"
+    # id must be same as port-channel number
+    id: "11"
+    speed: "auto"
+    duplex: "auto"
+    description: "AA03-6536-FI-A"
+#
+FI_B_PC:
+  - interface: "port-channel12"
+    # id must be same as port-channel number
+    id: "12"
+    speed: "auto"
+    duplex: "auto"
+    description: "AA03-6536-FI-B"
+#
+all_port_channels: "{{ peerlink_PC + uplink_PC + FI_A_PC + FI_B_PC }}"
+#
+# VPC Parameters
+#
+vpc_domain_id: "10"
+#

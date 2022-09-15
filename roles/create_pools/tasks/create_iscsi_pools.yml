@@ -1,0 +1,68 @@
+---
+- name: "Create IP Address Pools for iSCSI"
+  vars:
+    api_info: &api_info_iscsi
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+    ip_block_iscsi_a: {
+      "From": "{{ ip_pool_start_iscsi_a }}",
+      "Size": "{{ size_of_ip_pool_iscsi_a }}"
+     }
+
+    ip_block_iscsi_b: {
+      "From": "{{ ip_pool_start_iscsi_b }}",
+      "Size": "{{ size_of_ip_pool_iscsi_b }}"
+     }
+
+  block:
+  -  name: "IP Pool for iSCSI-A"
+     cisco.intersight.intersight_rest_api:
+        <<: *api_info_iscsi
+        resource_path: /ippool/Pools
+        query_params:
+           $filter: "Name eq '{{ name_of_ip_pool_for_iscsi_a }}'"
+        api_body: {
+          "Name": "{{ name_of_ip_pool_for_iscsi_a }}",
+          "Description": "{{ description_of_ip_pool_for_iscsi_a }}",
+          "IpV4Config": {
+            "Netmask": "{{ netmask_iscsi_a }}",
+            "Gateway": "{{ gateway_iscsi_a }}",
+            "PrimaryDns": "",
+            "SecondaryDns": ""
+            },
+          "IpV4Blocks": [ "{{ ip_block_iscsi_a }}" ],
+          "AssignmentOrder": default,
+          "Organization": {
+             "Moid": "{{ intersight_org.api_response.Moid }}"
+           },
+          Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}]
+         }
+     register: iscsi_a_ip_pool
+     
+  -  name: "IP Pool for iSCSI-B"
+     cisco.intersight.intersight_rest_api:
+        <<: *api_info_iscsi
+        resource_path: /ippool/Pools
+        query_params:
+           $filter: "Name eq '{{ name_of_ip_pool_for_iscsi_b }}'"
+        api_body: {
+          "Name": "{{ name_of_ip_pool_for_iscsi_b }}",
+          "Description": "{{ description_of_ip_pool_for_iscsi_b }}",
+          "IpV4Config": {
+            "Netmask": "{{ netmask_iscsi_b }}",
+            "Gateway": "{{ gateway_iscsi_b }}",
+            "PrimaryDns": "",
+            "SecondaryDns": ""
+            },
+          "IpV4Blocks": [ "{{ ip_block_iscsi_b }}" ],
+          "AssignmentOrder": default,
+          "Organization": {
+             "Moid": "{{ intersight_org.api_response.Moid }}"
+           },
+          Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}]
+         }
+     register: iscsi_b_ip_pool

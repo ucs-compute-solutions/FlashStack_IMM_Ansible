@@ -1,0 +1,107 @@
+---
+- name: FlashStack Configuration | FlashArray | Set Array Name to {{ array_name }}
+  purefa_arrayname:
+    name: "{{ array_name }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: initial_fa_config is defined
+
+- name: FlashStack Configuration | FlashArray | DNS for {{ array_name }}
+  purefa_dns:
+    domain: "{{ dns_domain }}"
+    nameservers: "{{ dns_address }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: initial_fa_config is defined
+
+- name: FlashStack Configuration | FlashArray | NTP for {{ array_name }}
+  purefa_ntp:
+    ntp_servers: "{{ ntp_servers }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: initial_fa_config is defined
+
+- name: FlashStack Configuration | FlashArray | SMTP for {{ array_name }}
+  purefa_smtp:
+    sender_domain: "{{ smtp_domain }}"
+    relay_host: "{{ smtp_relay }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: initial_fa_config is defined and smtp_domain is defined and smtp_relay is defined
+
+- name: FlashStack Configuration | FlashArray | Pure1 Proxy for {{ array_name }}
+  purefa_proxy:
+    host: "{{ proxy_server }}"
+    port: "{{ proxy_port }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: initial_fa_config is defined and proxy_server is defined and proxy_port is defined
+
+- name: FlashStack Configuration | FlashArray | Alert Email for {{ array_name }}
+  purefa_alert:
+    address: "{{ alert_address }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: initial_fa_config is defined and alert_address is defined
+
+- name: FlashStack Configuration | FlashArray | Phone Home for {{ array_name }}
+  purefa_phonehome:
+    state: "{{ phonehome }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: initial_fa_config is defined
+
+- name: FlashStack Configuration | FlashArray | Remote Assist for {{ array_name }}
+  purefa_ra:
+    state: "{{ remote_assist }}"
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+  when: initial_fa_config is defined
+
+- name: FlashStack Configuration | FlashArray | Active Directory roles for {{ array_name }}
+  purefa_dsrole:
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+    role: "{{ ad_item.name }}"
+    group_base: "{{ ad_item.group_base }}"
+    group: "{{ ad_item.group }}"
+  loop_control:
+    loop_var: ad_item
+  loop:
+    - name: array_admin
+      group_base: "{{ ad_admin_base }}"
+      group: "{{ ad_admin_group }}"
+    - name: readonly
+      group_base: "{{ ad_ro_base }}"
+      group: "{{ ad_ro_group }}"
+    - name: ops_admin
+      group_base: "{{ ad_ops_base }}"
+      group: "{{ ad_ops_group }}"
+    - name: storage_admin
+      group_base: "{{ ad_storage_base }}"
+      group: "{{ ad_storage_group }}"
+  when: initial_fa_config is defined
+
+- name: FlashStack Configuration | FlashArray | Management Active Directory for {{ array_name }}
+  purefa_ds:
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+    enable: true
+    dstype: management
+    uri: "{{ mgmt_ad_uri }}"
+    base_dn: "{{ mgmt_ad_base }}"
+    bind_user: "{{ mgmt_ad_user }}"
+    bind_password: "{{ mgmt_ad_password }}"
+  no_log: true
+  when: initial_fa_config is defined
+
+- name: FlashStack Configuration | FlashArray | Configure iSCSI interfaces for {{ array_name }}
+  purefa_network:
+    fa_url: "{{ fa_url }}"
+    api_token: "{{ fa_api_token }}"
+    name: "{{ item.port }}"
+    mtu: "{{ iscsi_mtu }}"
+    gateway: "{{ iscsi_gateway }}"
+    address: "{{ item.ip }}"
+  with_items: "{{ interfaces }}"
+  when: configure_iscsi is defined and initial_fa_config is defined

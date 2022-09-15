@@ -1,0 +1,98 @@
+#                            ---  File with invenotry of all components of FlashStack  -- 
+# Please fill this file with information of Nexus, MDS, VCenter, ESXi and FlashArray details. 
+
+
+#Pure FlashArray Management IP. List only one cluster IP.
+[FlashArray]
+10.103.0.55
+
+
+[mds]
+mdsA ansible_host=10.103.0.7 ansible_user=admin ansible_password=H1ghV0lt ansible_network_os=nxos
+mdsB ansible_host=10.103.0.8 ansible_user=admin ansible_password=H1ghV0lt ansible_network_os=nxos
+
+
+[nexus]
+n9kA ansible_host=10.103.0.3 ansible_user=admin ansible_password=H1ghV0lt ansible_network_os=nxos
+n9kB ansible_host=10.103.0.4 ansible_user=admin ansible_password=H1ghV0lt ansible_network_os=nxos
+
+
+
+# This section is used to define the ESXi configuration parameters.
+# You need to provide vmotion, iSCSI-A and iSCSI-B (if needed) IP addresses and subnet masks to be configured on VMK for the hosts
+
+# The VMware vCenter connectivity information is defined in group_vars/all.yml using following variables:
+# vcenter_hostname, vcenter_username, vcenter_password
+
+# The ESXi host username and password is also defined (copied) in group_vars/all.yml esxi_username and esxi_password
+
+[vmware:children]
+esxi_fc
+esxi_iscsi
+esxi_nvme
+
+[vmware:vars]
+ansible_connection=ssh
+ansible_user=root
+ansible_ssh_pass=H1ghV0lt
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+
+#
+# Comment out or delete all the hosts if ESXi hosts with FC connectivity are not present
+# FC host configuration will only take place if the variable configure_fc: "yes" is defined (not commended out)
+#
+#nx-esxi-fc-1.flashstack.com  vmotion_ip=192.168.30.111  vmotion_mask=255.255.255.0
+#nx-esxi-fc-2.flashstack.com  vmotion_ip=192.168.30.112  vmotion_mask=255.255.255.0
+#nx-esxi-fc-3.flashstack.com  vmotion_ip=192.168.30.113  vmotion_mask=255.255.255.0
+[esxi_fc]
+vm-host-infra-fcp-01.flashstack.com  vmotion_ip=192.168.30.111  vmotion_mask=255.255.255.0
+vm-host-infra-fcp-02.flashstack.com  vmotion_ip=192.168.30.112  vmotion_mask=255.255.255.0
+vm-host-infra-fcp-03.flashstack.com  vmotion_ip=192.168.30.113  vmotion_mask=255.255.255.0
+
+
+
+#
+# Comment out or delete all the hosts if ESXi hosts with iSCSI connectivity are not present
+# FC host configuration will only take place if the variable configure_fc: "yes" is defined (not commented out)
+#
+#<ESXi-3-Mgmt-IP-Address> vmotion=<vMotion-VMK-IP-to-be-configured> vmotion_mask=<Subent Mask for vMotion> nfs=<NFS-VMK-IP-to-be-configured> nfs_mask=<Subent Mask for NFS> iscsi_a_ip=<iSCSI-A-IP-to-be-configured> iscsi_b_ip=<iSCSI-B-IP-to-be-configured> iscsi_mask=< Common Subnet Mask for both iSCSI>
+#<ESXi-4-Mgmt-IP-Address> vmotion=<vMotion-VMK-IP-to-be-configured> vmotion_mask=<Subent Mask for vMotion> nfs=<NFS-VMK-IP-to-be-configured> nfs_mask=<Subent Mask
+[esxi_iscsi]
+nx-esxi-iscsi-1.flashstack.com vmotion_ip=192.168.30.117  vmotion_mask=255.255.255.0 iscsi_a_ip=192.168.31.117 iscsi_b_ip=192.168.32.117 iscsi_mask=255.255.255.0
+nx-esxi-iscsi-2.flashstack.com vmotion_ip=192.168.30.118  vmotion_mask=255.255.255.0 iscsi_a_ip=192.168.31.118 iscsi_b_ip=192.168.32.118 iscsi_mask=255.255.255.0
+nx-esxi-iscsi-3.flashstack.com vmotion_ip=192.168.30.119  vmotion_mask=255.255.255.0 iscsi_a_ip=192.168.31.119 iscsi_b_ip=192.168.32.119 iscsi_mask=255.255.255.0
+
+
+
+#
+# Comment out or delete all the hosts if ESXi hosts with NVMe connectivity are not present
+# FC-NVMe host configuration will only take place if the variable configure_fc_nvme: "yes" is defined, AND configure_fc: "no" is  commented out)
+#
+#nx-esxi-fc-1.flashstack.com  vmotion_ip=192.168.30.111  vmotion_mask=255.255.255.0
+#nx-esxi-fc-2.flashstack.com  vmotion_ip=192.168.30.112  vmotion_mask=255.255.255.0
+#nx-esxi-fc-3.flashstack.com  vmotion_ip=192.168.30.113  vmotion_mask=255.255.255.0
+
+[esxi_nvme]
+vm-host-infra-nvme-1.flashstack.com vmotion_ip=192.168.30.121  vmotion_mask=255.255.255.0
+vm-host-infra-nvme-2.flashstack.com vmotion_ip=192.168.30.122  vmotion_mask=255.255.255.0
+vm-host-infra-nvme-3.flashstack.com vmotion_ip=192.168.30.123  vmotion_mask=255.255.255.0
+
+
+
+
+
+# Currently, this file does not need any UCS server entries to be populated.
+# You can execute update_all_inventory.yml playbook to update your server information in this file.
+# In the current release, the playbooks are used to create server profile template from which server profiles are derived manually by the end user.
+[Intersight_HX]
+sample-entry-do-not-delete
+
+[Intersight_Servers]
+sample-entry-do-not-delete
+
+
+[Intersight:children]
+Intersight_HX
+Intersight_Servers
+

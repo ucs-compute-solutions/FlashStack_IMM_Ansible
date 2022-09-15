@@ -1,0 +1,16 @@
+---
+# Create various pools. The pools being created are:
+# - IP Pools for Mgmt
+# - IQN Pools for iSCSI (if needed)
+# - iSCSI IP pools (if needed)
+# - WWxx Pools for FC (if needed)
+# - UUID pools
+# - MAC address Pools
+#
+- name: "Create Various Pools"
+  hosts: localhost
+  gather_facts: no
+
+  # Create Various Pool
+  roles:
+    - role: create_pools

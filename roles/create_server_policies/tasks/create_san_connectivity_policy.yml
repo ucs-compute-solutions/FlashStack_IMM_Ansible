@@ -1,0 +1,133 @@
+---
+- name: "Configure SAN Connectivity Policy"
+  vars:
+    api_info: &api_info
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+  block:
+  - name: "SAN Connectivity Policy for FC"
+    cisco.intersight.intersight_rest_api:
+          <<: *api_info
+          resource_path: /vnic/SanConnectivityPolicies
+          query_params:
+             $filter: "Name eq '{{ name_of_san_connectivity_policy }}'"
+          api_body: {
+            "Name": "{{ name_of_san_connectivity_policy }}",
+            "Description": "{{ description_of_san_connectivity_policy }}",
+
+            "Organization": {
+               "Moid": "{{ intersight_org.api_response.Moid }}"
+             },
+            Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+            "TargetPlatform": "FIAttached",
+            "PlacementMode": "custom",
+            "WwnnAddressType": "POOL",
+            "WwnnPool": "{{ wwnn_pool_details.api_response.Moid }}",
+            "StaticWwnnAddress": ""
+           }
+    register: san_connectivity_policy
+
+  - name: "Add {{ name_of_vhba_a }} to SAN Connectivity Policy"   
+    cisco.intersight.intersight_rest_api:
+          <<: *api_info
+          resource_path: /vnic/FcIfs
+          query_params:
+             $filter: "Name eq '{{ name_of_vhba_a }}'"
+          api_body: {
+            "Name": "{{ name_of_vhba_a }}",
+            "Type": "fc-initiator",
+            "WwpnAddressType": "POOL",
+            "WwpnPool": "{{ wwpn_pool_san_a_details.api_response.Moid }}",
+            "Placement": {
+              "SwitchId": "A",
+              "Id": "{{ vic_slot_id }}",
+              "Uplink": 0
+            },
+            "PersistentBindings": false,
+            "FcNetworkPolicy": "{{ fc_network_policy_san_a.api_response.Moid }}",
+            "FcQosPolicy": "{{ fc_qos_policy.api_response.Moid }}",
+            "FcAdapterPolicy": "{{ fc_adapter_policy.api_response.Moid}}",
+            "StaticWwpnAddress": "",
+            "SanConnectivityPolicy": "{{ san_connectivity_policy.api_response.Moid }}",
+            "Order": 4
+           }
+
+  - name: "Add {{ name_of_vhba_b }} to SAN Connectivity Policy"  
+    cisco.intersight.intersight_rest_api:
+          <<: *api_info
+          resource_path: /vnic/FcIfs
+          query_params:
+             $filter: "Name eq '{{ name_of_vhba_b }}'"
+          api_body: {
+            "Name": "{{ name_of_vhba_b }}",
+            "Type": "fc-initiator",
+            "WwpnAddressType": "POOL",
+            "WwpnPool": "{{ wwpn_pool_san_b_details.api_response.Moid }}",
+            "Placement": {
+              "SwitchId": "B",
+              "Id": "{{ vic_slot_id }}",
+              "Uplink": 0
+            },
+            "PersistentBindings": false,
+            "FcNetworkPolicy": "{{ fc_network_policy_san_b.api_response.Moid }}",
+            "FcQosPolicy": "{{ fc_qos_policy.api_response.Moid }}",
+            "FcAdapterPolicy": "{{ fc_adapter_policy.api_response.Moid}}",
+            "StaticWwpnAddress": "",
+            "SanConnectivityPolicy": "{{ san_connectivity_policy.api_response.Moid }}",
+            "Order": 5
+           }
+
+  - name: "Add {{ name_of_nvme_vhba_a }} to SAN Connectivity Policy"   
+    cisco.intersight.intersight_rest_api:
+          <<: *api_info
+          resource_path: /vnic/FcIfs
+          query_params:
+             $filter: "Name eq '{{ name_of_nvme_vhba_a }}'"
+          api_body: {
+            "Name": "{{ name_of_nvme_vhba_a }}",
+            "Type": "fc-nvme-initiator",
+            "WwpnAddressType": "POOL",
+            "WwpnPool": "{{ wwpn_pool_san_a_details.api_response.Moid }}",
+            "Placement": {
+              "SwitchId": "A",
+              "Id": "{{ vic_slot_id }}",
+              "Uplink": 0
+            },
+            "PersistentBindings": false,
+            "FcNetworkPolicy": "{{ fc_network_policy_san_a.api_response.Moid }}",
+            "FcQosPolicy": "{{ fc_qos_policy.api_response.Moid }}",
+            "FcAdapterPolicy": "{{ fc_nvme_initiator_adapter_policy.api_response.Moid}}",
+            "StaticWwpnAddress": "",
+            "SanConnectivityPolicy": "{{ san_connectivity_policy.api_response.Moid }}",
+            "Order": 6
+           }
+    when: configure_fc_nvme == 'true'
+
+  - name: "Add {{ name_of_nvme_vhba_b }} to SAN Connectivity Policy"  
+    cisco.intersight.intersight_rest_api:
+          <<: *api_info
+          resource_path: /vnic/FcIfs
+          query_params:
+             $filter: "Name eq '{{ name_of_nvme_vhba_b }}'"
+          api_body: {
+            "Name": "{{ name_of_nvme_vhba_b }}",
+            "Type": "fc-nvme-initiator",
+            "WwpnAddressType": "POOL",
+            "WwpnPool": "{{ wwpn_pool_san_b_details.api_response.Moid }}",
+            "Placement": {
+              "SwitchId": "B",
+              "Id": "{{ vic_slot_id }}",
+              "Uplink": 0
+            },
+            "PersistentBindings": false,
+            "FcNetworkPolicy": "{{ fc_network_policy_san_b.api_response.Moid }}",
+            "FcQosPolicy": "{{ fc_qos_policy.api_response.Moid }}",
+            "FcAdapterPolicy": "{{ fc_nvme_initiator_adapter_policy.api_response.Moid}}",
+            "StaticWwpnAddress": "",
+            "SanConnectivityPolicy": "{{ san_connectivity_policy.api_response.Moid }}",
+            "Order": 7
+           }
+    when: configure_fc_nvme == 'true'

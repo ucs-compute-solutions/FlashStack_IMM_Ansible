@@ -1,0 +1,106 @@
+---
+- name: "Configure iSCSI Static Target Policies"
+  vars:
+    api_info: &api_info
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  block:
+  -   name: "Configure iSCSI-A Primary Target Policy"
+      cisco.intersight.intersight_rest_api:
+            <<: *api_info
+            resource_path: /vnic/IscsiStaticTargetPolicies
+            query_params:
+               $filter: "Name eq '{{ name_of_iscsi_a_primary_target_policy }}'"
+            api_body: {
+              "Name": "{{ name_of_iscsi_a_primary_target_policy }}",
+              "Description": "{{ description_of_iscsi_a_primary_target_policy }}",
+
+              "Organization": {
+                 "Moid": "{{ intersight_org.api_response.Moid }}"
+               },
+              Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+              "TargetName": "{{ iscsi_StorageSystem_target_iqn }}",
+              "IpAddress": "{{ target_ip_of_iscsi_a_primary  }}",
+              "Port": "{{ iscsi_StorageSystem_port }}",
+              "Lun": {
+                  "LunId": "{{ iscsi_StorageSystem_lunID }}"
+                }
+             }
+      register: iscsi_a_primary_target
+
+
+  -   name: "Configure iSCSI-A Secondary Target Policy"
+      cisco.intersight.intersight_rest_api:
+            <<: *api_info
+            resource_path: /vnic/IscsiStaticTargetPolicies
+            query_params:
+               $filter: "Name eq '{{ name_of_iscsi_a_secondary_target_policy }}'"
+            api_body: {
+              "Name": "{{ name_of_iscsi_a_secondary_target_policy }}",
+              "Description": "{{ description_of_iscsi_a_secondary_target_policy }}",
+
+              "Organization": {
+                 "Moid": "{{ intersight_org.api_response.Moid }}"
+               },
+              Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}], 
+              "TargetName": "{{ iscsi_StorageSystem_target_iqn }}",
+              "IpAddress": "{{ target_ip_of_iscsi_a_secondary  }}",
+              "Port": "{{ iscsi_StorageSystem_port }}",
+              "Lun": {
+                  "LunId": "{{ iscsi_StorageSystem_lunID }}"
+                }
+             }
+      register: iscsi_a_secondary_target
+
+
+  -   name: "Configure iSCSI-B Primary Target Policy"
+      cisco.intersight.intersight_rest_api:
+            <<: *api_info
+            resource_path: /vnic/IscsiStaticTargetPolicies
+            query_params:
+               $filter: "Name eq '{{ name_of_iscsi_b_primary_target_policy }}'"
+            api_body: {
+              "Name": "{{ name_of_iscsi_b_primary_target_policy }}",
+              "Description": "{{ description_of_iscsi_b_primary_target_policy }}",
+
+              "Organization": {
+                 "Moid": "{{ intersight_org.api_response.Moid }}"
+               },
+              Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}], 
+              "TargetName": "{{ iscsi_StorageSystem_target_iqn }}",
+              "IpAddress": "{{ target_ip_of_iscsi_b_primary  }}",
+              "Port": "{{ iscsi_StorageSystem_port }}",
+              "Lun": {
+                  "LunId": "{{ iscsi_StorageSystem_lunID }}"
+                }
+             }
+      register: iscsi_b_primary_target
+
+
+  -   name: "Configure iSCSI-B Secondary Target Policy"
+      cisco.intersight.intersight_rest_api:
+            <<: *api_info
+            resource_path: /vnic/IscsiStaticTargetPolicies
+            query_params:
+               $filter: "Name eq '{{ name_of_iscsi_b_secondary_target_policy }}'"
+            api_body: {
+              "Name": "{{ name_of_iscsi_b_secondary_target_policy }}",
+              "Description": "{{ description_of_iscsi_b_secondary_target_policy }}",
+
+              "Organization": {
+                 "Moid": "{{ intersight_org.api_response.Moid }}"
+               },
+              Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}], 
+              "TargetName": "{{ iscsi_StorageSystem_target_iqn }}",
+              "IpAddress": "{{ target_ip_of_iscsi_b_secondary  }}",
+              "Port": "{{ iscsi_StorageSystem_port }}",
+              "Lun": {
+                  "LunId": "{{ iscsi_StorageSystem_lunID }}"
+                }
+             }
+      register: iscsi_b_secondary_target
+      

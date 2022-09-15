@@ -1,0 +1,53 @@
+# This file defines the Description for creating various pools
+# These values typically do not need to changes but can be modified depending on customer deployments
+# ---------------------------------------------------------------------------------------------------
+#
+#--------------UUID Pool Defaults-------------------
+#
+description_of_uuid_pool: "UUID Pool for Server Profiles"
+#
+#------------IP MGMT Pool Defaults----------------
+# IP Mgmt Pool Description
+#
+description_of_ip_pool_for_mgmt_access      : "IP Pool for Mgmt access"
+#
+#--------------IQN Pool Defaults-------------------
+# IQN Pool Description
+#
+description_of_iqn_pool          : "IQN Pool for iSCSI Configuration"
+
+
+#------------MAC Address Pool Defaults-------------
+# MAC Pool Description
+#
+#For MAC-A
+#
+description_of_mac_pool_on_fi_a   : "MAC Pool for FI-A"
+# For MAC-B
+#
+description_of_mac_pool_on_fi_b   : "MAC Pool for FI-B"
+
+#--------------iSCSI Pool Defaults------------------
+# iSCSI IP Pool Description
+#
+# iSCSI-A Pool
+#
+description_of_ip_pool_for_iscsi_a    : "IP Pool used by iSCSI on FI-A"
+# iSCSI-B Pool
+#
+description_of_ip_pool_for_iscsi_b    : "IP Pool used by iSCSI on FI-B"
+
+#--------------FC WW Pool Defaults------------------
+# FC WWN and WWPN Description
+#
+# WWNN pool Description
+#
+description_of_wwnn_pool        : "WWNN Pool for FC Hosts"
+#
+# WWPN pool Description for SAN-A
+#
+description_of_wwpn_pool_san_a  : "WWPN Pool for SAN-A"
+#
+# WWPN pool Description for SAN-B
+#
+description_of_wwpn_pool_san_b  : "WWPN Pool for SAN-B"

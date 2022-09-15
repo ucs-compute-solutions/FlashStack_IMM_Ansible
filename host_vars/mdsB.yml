@@ -1,0 +1,90 @@
+---
+# Variables defined here are specific to MDS-B
+#
+#  Variables used to create port channel to UCS.
+port_channel_id: 
+port_channel_speed: "32000"
+port_channel_description: "AA03-6536-B"
+#
+#  VSAN number to use used for a the fabric being created
+vsan_id: "{{ vsan_list[1].vsan_id}}"
+vsan_name: "{{ vsan_list[1].name}}"
+#
+# The zone name and zoneset names used in the configuration
+zoneset_name: Fabric-B
+fcp_zone_name: Infra-VSI-Fabric-B
+fc_nvme_zone_name: Infra-NVMe-VSI-Fabric-B
+
+
+#
+# Device alias list using device names and PWWNs from CVD.  Update the PWWNs to match your deployment
+# Any changes made to the device names will always need to be updated in the Zoning List below
+fcp_device_alias_list:
+  - device_name: FlashArray-CT0FC2
+    pwwn: "{{ fcp_ct0_fc2 }}"
+    dev_type: target
+  - device_name: FlashArray-CT1FC2
+    pwwn: "{{ fcp_ct1_fc2 }}"
+    dev_type: target
+  - device_name: VM-Host-Infra-FCP-01-B
+    pwwn: "{{ ucs_host_01_b }}"
+    dev_type: initiator
+  - device_name: VM-Host-Infra-FCP-02-B
+    pwwn: "{{ ucs_host_02_b }}"
+    dev_type: initiator
+  - device_name: VM-Host-Infra-FCP-03-B
+    pwwn: "{{ ucs_host_03_b }}"
+    dev_type: initiator
+
+
+#
+fc_nvme_device_alias_list:
+  - device_name: FlashArray-CT0FC3
+    pwwn: "{{ fcp_ct0_fc3 }}"
+    dev_type: target
+  - device_name: FlashArray-CT1FC3
+    pwwn: "{{ fcp_ct1_fc3 }}"
+    dev_type: target
+  - device_name: VM-Host-Infra-FC-NVMe-01-B
+    pwwn: "{{ ucs_nvme_host_01_b }}"
+    dev_type: initiator
+  - device_name: VM-Host-Infra-FC-NVMe-02-B
+    pwwn: "{{ ucs_nvme_host_02_b }}"
+    dev_type: initiator
+  - device_name: VM-Host-Infra-FC-NVMe-03-B
+    pwwn: "{{ ucs_nvme_host_03_b }}"
+    dev_type: initiator
+
+
+#
+# MDS Switch FC Interface List
+#
+storage_interface_list:
+  - interface: "fc1/1"
+    description: "AA03-XL170-ct0fc2"
+    speed: "32000"
+  - interface: "fc1/2"
+    description: "AA03-XL170-ct1fc2"
+    speed: "32000"
+  - interface: "fc1/3"
+    description: "AA03-XL170-ct0fc3"
+    speed: "32000"
+  - interface: "fc1/4"
+    description: "AA03-XL170-ct1fc3"
+    speed: "32000"
+#
+
+ucs_interface_list:
+  - interface: "fc1/5"
+    description: "AA03-6536-B:fc1/1"
+    speed: "32000"
+  - interface: "fc1/6"
+    description: "AA03-6536-B:fc1/2"
+    speed: "32000"
+  - interface: "fc1/7"
+    description: "AA03-6536-B:fc1/3"
+    speed: "32000"
+  - interface: "fc1/8"
+    description: "AA03-6536-B:fc1/4"
+    speed: "32000"
+

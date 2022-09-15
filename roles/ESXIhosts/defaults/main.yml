@@ -1,0 +1,21 @@
+---
+# Variables for ESXi Configuration
+# Adjust the variable values as per your requirements
+#
+# List of NTP Servers to be used by ESXi hosts
+ntp_servers_list: "{{ ib_mgmt_ntp_servers[0].ip_address }},{{ ib_mgmt_ntp_servers[1].ip_address }}"
+#
+# Uplinks to be used by various Switch Configurations
+#
+mgmt_uplink1: "vmnic0"
+mgmt_uplink2: "vmnic1"
+#
+# Variables for ESXi driver installation/update
+#
+nenic_offline_bundle_url: "http://10.103.1.2/Cisco-nenic_1.0.42.0-1OEM.670.0.0.8169922-offline_bundle-19715481.zip"
+nenic_filename: "Cisco-nenic_1.0.42.0-1OEM.670.0.0.8169922-offline_bundle-19715481.zip"
+nfnic_offline_bundle_url: "http://10.103.1.2/Cisco-nfnic_5.0.0.34-1OEM.700.1.0.15843807_19966277"
+nfnic_filename: "Cisco-nfnic_5.0.0.34-1OEM.700.1.0.15843807_19966277"
+UCS_Tools_url: "http://10.103.1.2/software/UCS/ucs-tool-esxi_1.2.1-1OEM.zip"
+UCS_Tools_filename: "ucs-tool-esxi_1.2.1-1OEM.zip"
+

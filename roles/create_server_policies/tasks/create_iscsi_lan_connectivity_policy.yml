@@ -1,0 +1,277 @@
+---
+
+- name: "Configure LAN Connectivity Policy for iSCSI SAN"
+  vars:
+    api_info: &api_info_iscsi
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+
+  block:
+  - name: "LAN Connectivity Policy for iSCSI"
+    cisco.intersight.intersight_rest_api:
+          <<: *api_info_iscsi
+          resource_path: /vnic/LanConnectivityPolicies
+          query_params:
+             $filter: "Name eq '{{ name_of_iscsi_lan_connectivity_policy }}'"
+          api_body: {
+              "Name": "{{ name_of_iscsi_lan_connectivity_policy }}",
+              "Description": "{{ description_of_iscsi_lan_connectivity_policy }}",
+
+              "TargetPlatform": "FIAttached",
+              "AzureQosEnabled": false,
+              "IqnAllocationType": "Pool",
+              "PlacementMode": "custom",
+              "IqnPool": "{{ iqn_pool_details.api_response.Moid }}",
+              "StaticIqnName": "",
+
+              "Organization": {
+                 "Moid": "{{ intersight_org.api_response.Moid }}"
+               },
+              Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}] 
+           }
+    register: iscsi_lan_connectivity_policy
+
+  - name: "Add {{ name_of_iscsi_vnic_1 }} to LAN Connectivity Policy"
+    cisco.intersight.intersight_rest_api:
+        <<: *api_info_iscsi
+        resource_path: /vnic/EthIfs
+        query_params:
+           $filter: "Name eq '{{ name_of_iscsi_vnic_1 }}'"
+        api_body: {
+             "Name": "{{ name_of_iscsi_vnic_1 }}",
+             "MacAddressType": "POOL",
+             "MacPool": "{{ mac_pool_fi_a_details.api_response.Moid }}",
+             "Placement": {
+                "SwitchId": "A",
+                "Id": "{{ vic_slot_id }}",
+               #  "PciLink": 0,
+                "Uplink": 0
+             },
+             "Cdn": {
+                "Source": "vnic"
+             },
+             "FailoverEnabled": false,
+             "FabricEthNetworkGroupPolicy": [ "{{ management_network_group_policy.api_response.Moid }}" ],
+             "FabricEthNetworkControlPolicy": "{{ ethernet_network_control_policy.api_response.Moid }}",
+             "EthQosPolicy": "{{ ethernet_qos_policy.api_response.Moid }}",
+             "EthAdapterPolicy": "{{ ethernet_adapter_vmware_policy.api_response.Moid }}",
+             "StaticMacAddress": "",
+             "LanConnectivityPolicy": "{{ iscsi_lan_connectivity_policy.api_response.Moid }}",
+             "Order": 0
+         }
+
+
+  - name: "Add {{ name_of_iscsi_vnic_2 }} to LAN Connectivity Policy"
+    cisco.intersight.intersight_rest_api:
+        <<: *api_info_iscsi
+        resource_path: /vnic/EthIfs
+        query_params:
+           $filter: "Name eq '{{ name_of_iscsi_vnic_2 }}'"
+        api_body: {
+             "Name": "{{ name_of_iscsi_vnic_2 }}",
+             "MacAddressType": "POOL",
+             "MacPool": "{{ mac_pool_fi_b_details.api_response.Moid }}",
+             "Placement": {
+                "SwitchId": "B",
+                "Id": "{{ vic_slot_id }}",
+               #  "PciLink": 0,
+                "Uplink": 0
+             },
+             "Cdn": {
+                "Source": "vnic"
+             },
+             "FailoverEnabled": false,
+             "FabricEthNetworkGroupPolicy": [ "{{ management_network_group_policy.api_response.Moid }}" ],
+             "FabricEthNetworkControlPolicy": "{{ ethernet_network_control_policy.api_response.Moid }}",
+             "EthQosPolicy": "{{ ethernet_qos_policy.api_response.Moid }}",
+             "EthAdapterPolicy": "{{ ethernet_adapter_vmware_policy.api_response.Moid }}",
+             "StaticMacAddress": "",
+             "LanConnectivityPolicy": "{{ iscsi_lan_connectivity_policy.api_response.Moid }}",
+             "Order": 1
+         }
+
+  - name: "Add {{ name_of_iscsi_vnic_3 }}  to LAN Connectivity Policy"
+    cisco.intersight.intersight_rest_api:
+      <<: *api_info_iscsi
+      resource_path: /vnic/EthIfs
+      query_params:
+         $filter: "Name eq '{{ name_of_iscsi_vnic_3 }}'"
+      api_body: {
+           "Name": "{{ name_of_iscsi_vnic_3 }}",
+           "MacAddressType": "POOL",
+           "MacPool": "{{ mac_pool_fi_a_details.api_response.Moid }}",
+           "Placement": {
+               "SwitchId": "A",
+               "Id": "{{ vic_slot_id }}",
+               # "PciLink": 0,
+               "Uplink": 0
+           },
+           "Cdn": {
+              "Source": "vnic"
+           },
+           "FailoverEnabled": false,
+           "FabricEthNetworkGroupPolicy": [ "{{ vmotion_network_group_policy.api_response.Moid }}" ],
+           "FabricEthNetworkControlPolicy": "{{ ethernet_network_control_policy.api_response.Moid }}",
+           "EthQosPolicy": "{{ ethernet_qos_policy.api_response.Moid }}",
+           "EthAdapterPolicy": "{{ ethernet_adapter_hightrf_policy.api_response.Moid }}",
+           "StaticMacAddress": "",
+           "LanConnectivityPolicy": "{{ iscsi_lan_connectivity_policy.api_response.Moid }}",
+           "Order": 2          
+       }
+
+
+  - name: "Add {{ name_of_iscsi_vnic_4 }}  to LAN Connectivity Policy"
+    cisco.intersight.intersight_rest_api:
+      <<: *api_info_iscsi
+      resource_path: /vnic/EthIfs
+      query_params:
+         $filter: "Name eq '{{ name_of_iscsi_vnic_4 }}'"
+      api_body: {
+           "Name": "{{ name_of_iscsi_vnic_4 }}",
+           "MacAddressType": "POOL",
+           "MacPool": "{{ mac_pool_fi_b_details.api_response.Moid }}",
+           "Placement": {
+               "SwitchId": "B",
+               "Id": "{{ vic_slot_id }}",
+               # "PciLink": 0,
+               "Uplink": 0
+           },
+           "Cdn": {
+              "Source": "vnic"
+           },
+           "FailoverEnabled": false,
+           "FabricEthNetworkGroupPolicy": [ "{{ vmotion_network_group_policy.api_response.Moid }}" ],
+           "FabricEthNetworkControlPolicy": "{{ ethernet_network_control_policy.api_response.Moid }}",
+           "EthQosPolicy": "{{ ethernet_qos_policy.api_response.Moid }}",
+           "EthAdapterPolicy": "{{ ethernet_adapter_hightrf_policy.api_response.Moid }}",
+           "StaticMacAddress": "",
+           "LanConnectivityPolicy": "{{ iscsi_lan_connectivity_policy.api_response.Moid }}",
+           "Order": 3
+       }
+
+  - name: "Add {{ name_of_iscsi_a_vnic }} vnic to LAN Connectivity Policy - 4th Gen VIC"
+    cisco.intersight.intersight_rest_api:
+      <<: *api_info_iscsi
+      resource_path: /vnic/EthIfs
+      query_params:
+         $filter: "Name eq '{{ name_of_iscsi_a_vnic }}'"
+      api_body: {
+           "Name": "{{ name_of_iscsi_a_vnic }}",
+           "MacAddressType": "POOL",
+           "MacPool": "{{ mac_pool_fi_a_details.api_response.Moid }}",
+           "Placement": {
+               "SwitchId": "A",
+               "Id": "{{ vic_slot_id }}",
+               # "PciLink": 0,
+               "Uplink": 0
+           },
+           "Cdn": {
+              "Source": "vnic"
+           },
+           "FailoverEnabled": false,
+           "FabricEthNetworkGroupPolicy": [ "{{ iscsi_a_network_group_policy.api_response.Moid }}" ],
+           "FabricEthNetworkControlPolicy": "{{ ethernet_network_control_policy.api_response.Moid }}",
+           "EthQosPolicy": "{{ ethernet_qos_policy.api_response.Moid }}",
+           "EthAdapterPolicy": "{{ ethernet_adapter_16rxq4g_policy.api_response.Moid }}",
+           "StaticMacAddress": "",
+           "IscsiBootPolicy": "{{ iscsi_a_boot_policy.api_response.Moid }}",
+           "LanConnectivityPolicy": "{{ iscsi_lan_connectivity_policy.api_response.Moid }}",
+           "Order": 4
+       }
+    when: vic_type == "4G"
+
+  - name: "Add {{ name_of_iscsi_b_vnic }} vnic to LAN Connectivity Policy - 4th Gen VIC"
+    cisco.intersight.intersight_rest_api:
+      <<: *api_info_iscsi
+      resource_path: /vnic/EthIfs
+      query_params:
+         $filter: "Name eq '{{ name_of_iscsi_b_vnic }}'"
+      api_body: {
+           "Name": "{{ name_of_iscsi_b_vnic }}",
+           "MacAddressType": "POOL",
+           "MacPool": "{{ mac_pool_fi_b_details.api_response.Moid }}",
+           "Placement": {
+               "SwitchId": "B",
+               "Id": "{{ vic_slot_id }}",
+               # "PciLink": 0,
+               "Uplink": 0
+             },
+           "Cdn": {
+              "Source": "vnic"
+           },
+           "FailoverEnabled": false,
+           "FabricEthNetworkGroupPolicy": [ "{{ iscsi_b_network_group_policy.api_response.Moid }}" ],
+           "FabricEthNetworkControlPolicy": "{{ ethernet_network_control_policy.api_response.Moid }}",
+           "EthQosPolicy": "{{ ethernet_qos_policy.api_response.Moid }}",
+           "EthAdapterPolicy": "{{ ethernet_adapter_16rxq4g_policy.api_response.Moid }}",
+           "StaticMacAddress": "",
+           "IscsiBootPolicy": "{{ iscsi_b_boot_policy.api_response.Moid }}",
+           "LanConnectivityPolicy": "{{ iscsi_lan_connectivity_policy.api_response.Moid }}",
+           "Order": 5
+       }
+    when: vic_type == "4G"
+
+  - name: "Add {{ name_of_iscsi_a_vnic }} vnic to LAN Connectivity Policy - 5th Gen VIC"
+    cisco.intersight.intersight_rest_api:
+      <<: *api_info_iscsi
+      resource_path: /vnic/EthIfs
+      query_params:
+         $filter: "Name eq '{{ name_of_iscsi_a_vnic }}'"
+      api_body: {
+           "Name": "{{ name_of_iscsi_a_vnic }}",
+           "MacAddressType": "POOL",
+           "MacPool": "{{ mac_pool_fi_a_details.api_response.Moid }}",
+           "Placement": {
+               "SwitchId": "A",
+               "Id": "{{ vic_slot_id }}",
+               # "PciLink": 0,
+               "Uplink": 0
+           },
+           "Cdn": {
+              "Source": "vnic"
+           },
+           "FailoverEnabled": false,
+           "FabricEthNetworkGroupPolicy": [ "{{ iscsi_a_network_group_policy.api_response.Moid }}" ],
+           "FabricEthNetworkControlPolicy": "{{ ethernet_network_control_policy.api_response.Moid }}",
+           "EthQosPolicy": "{{ ethernet_qos_policy.api_response.Moid }}",
+           "EthAdapterPolicy": "{{ ethernet_adapter_16rxq5g_policy.api_response.Moid }}",
+           "StaticMacAddress": "",
+           "IscsiBootPolicy": "{{ iscsi_a_boot_policy.api_response.Moid }}",
+           "LanConnectivityPolicy": "{{ iscsi_lan_connectivity_policy.api_response.Moid }}",
+           "Order": 4
+       }
+    when: vic_type == "5G"
+
+  - name: "Add {{ name_of_iscsi_b_vnic }} vnic to LAN Connectivity Policy - 5th Gen VIC"
+    cisco.intersight.intersight_rest_api:
+      <<: *api_info_iscsi
+      resource_path: /vnic/EthIfs
+      query_params:
+         $filter: "Name eq '{{ name_of_iscsi_b_vnic }}'"
+      api_body: {
+           "Name": "{{ name_of_iscsi_b_vnic }}",
+           "MacAddressType": "POOL",
+           "MacPool": "{{ mac_pool_fi_b_details.api_response.Moid }}",
+           "Placement": {
+               "SwitchId": "B",
+               "Id": "{{ vic_slot_id }}",
+               # "PciLink": 0,
+               "Uplink": 0
+             },
+           "Cdn": {
+              "Source": "vnic"
+           },
+           "FailoverEnabled": false,
+           "FabricEthNetworkGroupPolicy": [ "{{ iscsi_b_network_group_policy.api_response.Moid }}" ],
+           "FabricEthNetworkControlPolicy": "{{ ethernet_network_control_policy.api_response.Moid }}",
+           "EthQosPolicy": "{{ ethernet_qos_policy.api_response.Moid }}",
+           "EthAdapterPolicy": "{{ ethernet_adapter_16rxq5g_policy.api_response.Moid }}",
+           "StaticMacAddress": "",
+           "IscsiBootPolicy": "{{ iscsi_b_boot_policy.api_response.Moid }}",
+           "LanConnectivityPolicy": "{{ iscsi_lan_connectivity_policy.api_response.Moid }}",
+           "Order": 5
+       }
+    when: vic_type == "5G"

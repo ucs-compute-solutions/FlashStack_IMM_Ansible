@@ -1,0 +1,31 @@
+---
+# Create  Server Profile Template for Converged Infrastrucure stack
+- name: "Create IMM Server Profile Template"
+  vars:
+    api_info: &api_info_org_moid
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+      api_uri: "{{ api_uri | default(omit) }}"
+      validate_certs: "{{ validate_certs | default(omit) }}"
+      state: "{{ state | default(omit) }}"
+  intersight_rest_api:
+    <<: *api_info_org_moid
+    resource_path: /organization/Organizations
+    query_params:
+      $filter: "Name eq '{{ org_name }}'"
+  register: intersight_org
+  delegate_to: localhost
+  tags: always
+  run_once: true
+
+
+# Collect information about various policies to be programmed into the Templates
+- include_tasks: gather_policy_info.yml
+
+# Create Server Profile Template for FC
+- include_tasks: create_fc_server_profile_template.yml
+  when: configure_fc == 'true'  
+
+# Create Server Profile Template for iSCSI
+- include_tasks: create_iscsi_server_profile_template.yml
+  when: configure_iscsi == 'true'  

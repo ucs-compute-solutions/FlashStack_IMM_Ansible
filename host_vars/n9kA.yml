@@ -1,0 +1,43 @@
+---
+vpc_source: 10.255.255.1
+vpc_destination:  10.255.255.2
+vpc_role_priority: "10"
+
+
+
+# NTP Distribution IP for N9K-A in the IB-MGMT VLAN
+IB_MGMT_ntp_dist_IP: "{{ ib_mgmt_ntp_servers[0].ip_address }}{{ ntp_distribution_nm_cidr }}"
+# Interface Lists; more interfaces can be added for additional BW
+#
+uplink_interface_list:
+  - interface: "Ethernet1/9"
+    description: "Uplink-SW"
+
+peerlink_interface_list:
+  - interface: "Ethernet1/101"
+    description: "AA03-93180-B:Eth1/101"
+  - interface: "Ethernet1/102"
+    description: "AA03-93180-B:Eth1/102"
+#
+FI_A_interface_list:
+  - interface: "Ethernet1/97"
+    description: "AA03-6536-FI-A:Eth1/29"
+
+#
+FI_B_interface_list:
+  - interface: "Ethernet1/98"
+    description: "AA03-6536-FI-B:Eth1/30"
+
+#
+
+
+storage_interface_list:
+  - interface: "Ethernet1/99"
+    description: "AA03-XL170-ct0.eth4"
+  - interface: "Ethernet1/100"
+    description: "AA03-XL170-ct1.eth4"
+
+iscsi_vlan: "3119"
+#
+all_interfaces: "{{ uplink_interface_list + peerlink_interface_list + FI_A_interface_list + FI_B_interface_list + storage_interface_list }}"
+

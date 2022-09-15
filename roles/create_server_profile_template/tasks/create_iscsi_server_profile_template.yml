@@ -1,0 +1,66 @@
+---
+# Create Server Profile Template for iSCSI Boot from SAN
+- name: "Configure Server Profiles Template for iSCSI Boot"
+  vars:
+        api_info: &api_info_assign_iscsi
+          api_private_key: "{{ api_private_key }}"
+          api_key_id: "{{ api_key_id }}"
+          api_uri: "{{ api_uri | default(omit) }}"
+          validate_certs: "{{ validates_certs | default(omit) }}"
+          state: "{{ state | default(omit) }}"
+
+  cisco.intersight.intersight_rest_api:
+          <<: *api_info_assign_iscsi
+          resource_path: /server/ProfileTemplates
+          query_params:
+            $filter: "Name eq '{{ name_of_iscsi_SPT }}'"
+          api_body: {
+              "Action": "No-op",
+              "Name": "{{ name_of_iscsi_SPT }}",
+              "Description": "{{ description_of_iscsi_SPT }}",
+              ClassId: "server.ProfileTemplate",
+              "PolicyBucket": [
+                {
+                  "Moid": "{{ bios_policy_details.api_response.Moid }}",
+                  "ObjectType": "bios.Policy"
+                },
+                {
+                  "Moid": "{{ iscsi_boot_order_policy_details.api_response.Moid }}",
+                  "ObjectType": "boot.PrecisionPolicy"
+                },
+                {
+                  "Moid": "{{ imc_access_policy_details.api_response.Moid }}",
+                  "ObjectType": "access.Policy"
+                },
+                {
+                  "Moid": "{{ ipmi_policy_details.api_response.Moid }}",
+                  "ObjectType": "ipmioverlan.Policy"
+                },
+                {
+                  "Moid": "{{ local_user_policy_details.api_response.Moid }}",
+                  "ObjectType": "iam.EndPointUserPolicy"
+                },
+                {
+                  "Moid": "{{ iscsi_lan_connectivity_policy_details.api_response.Moid }}",
+                  "ObjectType": "vnic.LanConnectivityPolicy"
+                },
+                {
+                  "Moid": "{{ kvm_policy_details.api_response.Moid }}",
+                  "ObjectType": "kvm.Policy"
+                },
+                {
+                  "Moid": "{{ vmedia_policy_details.api_response.Moid }}",
+                  "ObjectType": "vmedia.Policy"
+                }
+              ],
+              "TargetPlatform": "FIAttached",
+              "Organization": {
+                "Moid": "{{ intersight_org.api_response.Moid }}"
+              },
+              Tags: [{Key: "configmode", Value: "ansible"},{Key: "prefix", Value: "{{ prefix }}"}],
+              UuidAddressType: "POOL",
+              UuidPool: {
+                "Moid": "{{ uuid_pool_details.api_response.Moid }}"
+              }
+            }
+  
