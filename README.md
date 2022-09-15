@@ -1,10 +1,10 @@
 # FlashStack Virtual Server Infrastructure for End-to-End 100 Gigabit with Cisco UCS X-Series and Cisco UCS 5th Generation Fabric Technology
 
 This repository  contains Ansible playbooks to configure all the components of FlashStack including: <br />
-&emsp;&emsp; •	Cisco UCS in Intersight Managed Mode (IMM) <br />
-&emsp;&emsp; •	Cisco Nexus and MDS Switches <br />
-&emsp;&emsp; •	Pure FlashArray   <br />
-&emsp;&emsp; •	VMware ESXi and VMware vCenter.  <br />
+&emsp;&emsp; •	 Cisco UCS in Intersight Managed Mode (IMM) <br />
+&emsp;&emsp; •	 Cisco Nexus and MDS Switches <br />
+&emsp;&emsp; •	 Pure FlashArray   <br />
+&emsp;&emsp; •	 VMware ESXi and VMware vCenter.  <br />
 
 This repository can be used to automate the Virtual Server Infrastrcutre Deployment incorporating the Cisco Unified Computing System™ (Cisco UCS®) **X-Series modular platform**, Cisco Unified Computing System™ **5th Generation Fabric Technology** (5th Generation Fabric Interconnects 6536, 5th Generation Cisco UCS Virtual Interface Card and X9108-IFM-100G IFM) into the FlashStack Virtual Server Infrastructure (VSI) to enable end-to-end 100G Ethernet and 32G Fibre Channel. 
 
@@ -14,11 +14,13 @@ The CVD lays out the complete process for configuring the FlashStack using Ansib
 
 # FlashStack - physical topology for IP connectivity
 
-![image](https://user-images.githubusercontent.com/3585414/144472122-bd8f417f-87a7-4ce1-b24d-9a5f0e903b81.png)
+![ethernet](https://user-images.githubusercontent.com/25094641/190374265-daef542b-cdc6-40f6-9c7a-6cf76f99bbe2.jpg)
+
 
 # FlashStack - physical topology for FC connectivity
+![fc (1)](https://user-images.githubusercontent.com/25094641/190374304-b505b0e6-1011-4312-aca8-3d729d7fa1c4.jpg)
 
-![image](https://user-images.githubusercontent.com/3585414/144472208-26c0459a-81e7-4294-9805-055676847052.png)
+
 
 # Set up the execution environment
 To execute various ansible playbooks, a linux based system will need to be setup as described in the CVD with the packages listed at the following pages:
