@@ -36,7 +36,8 @@ To execute various ansible playbooks, a Linux based system will need to be setup
  You might already have this collection installed. 
 
 - To check whether it is installed, run: `ansible-galaxy collection list`
-- To install it, use: `ansible-galaxy collection install cisco.intersight` (For Intersight Collection) <br />
+- To install it, use: <br />
+- `ansible-galaxy collection install cisco.intersight` (For Intersight Collection) <br />
 `ansible-galaxy collection install cisco.nxos` (For Cisco NX-OS collection)  <br /> 
 `ansible-galaxy collection install purestorage.flasharray` (Pure Storage FlashArray Collection) <br />
 `ansible-galaxy collection install community.vmware` (For VMWare Ansible Collection) <br />
