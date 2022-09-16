@@ -8,7 +8,7 @@ This repository  contains Ansible playbooks to configure all the components of F
 
 This repository can be used to automate the Virtual Server Infrastrcutre Deployment incorporating the Cisco Unified Computing System™ (Cisco UCS®) **X-Series modular platform**, Cisco Unified Computing System™ **5th Generation Fabric Technology** (5th Generation Fabric Interconnects 6536, 5th Generation Cisco UCS Virtual Interface Card and X9108-IFM-100G IFM) into the FlashStack Virtual Server Infrastructure (VSI) to enable end-to-end 100G Ethernet and 32G Fibre Channel.
 
-Details are covered in the following Cisco Validated Design (CVD):
+Details will be covered in the upcoming Cisco Validated Design document.
 
 The CVD lays out the complete process for configuring the FlashStack using Ansible. Since these playbooks are intended to save time in setting up a working FlashStack, a complete FlashStack as shown below is needed to execute the playbooks.
 
