@@ -55,14 +55,6 @@ You might already have this collection installed.
 
 ### Intersight Configuration and Access Requirement
 
-To execute the playbooks against your Intersight account, you need to complete following additional steps of creating an API key and saving the Secrets_File:
-
-https://community.cisco.com/t5/data-center-and-cloud-documents/intersight-api-overview/ta-p/3651994
-
-The API key and Secrets_Filename information is added to the group_vars/all.yml. The default Secrets_File value in all.yml assumes Secrets_File was copied to the same folder/directory where Ansible Playbooks were cloned (alongside inventory file).
-
-<br />
-
 The Intersight playbooks in this repository perform following functions:
 
 1. Create various pools required to setup a Server Profile Template
@@ -74,6 +66,16 @@ After successfully executing the playbooks, one or many server profiles can easi
 **NOTE:** The addition of UCS to Intersight Account or configuration of Domain Profile to setup UCS is not part of this repository and will have to be performed manually before executing the playbooks. 
 
 **NOTE:** The playbooks do not create an organization and assume an organization (default or otherwise) has already been setup under Intersight account. The organization name must be updated in group_vars/all.yml(org_name) for successful execuation of the playbooks.
+
+<br />
+
+To execute the playbooks against your Intersight account, you need to complete following additional steps of creating an API key and saving the Secrets_File:
+
+https://community.cisco.com/t5/data-center-and-cloud-documents/intersight-api-overview/ta-p/3651994
+
+The API key and Secrets_Filename information is added to the group_vars/all.yml. The default Secrets_File value in all.yml assumes Secrets_File was copied to the same folder/directory where Ansible Playbooks were cloned (alongside inventory file).
+
+<br />
 
 
 ### Setting up Variables
