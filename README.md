@@ -82,7 +82,7 @@ The API key and Secrets_Filename information is added to the group_vars/all.yml.
 
 All the variables used in this framework are defined in the following locations:
 
-1. Variable that require customer inputs are part of group_vars/all.yml
+1. Variable that require customer inputs are part of group_vars/
 2. Variable that do not typically require customer input (e.g. descriptions etc.) are present under role_name/defauls/main.yml.
    Setup all the variables before executing the playbooks as detailed in the CVD. Intersight's pools and policies created using these playbooks are tagged with user_defined_prefix and "ansible" to easily filter the configuration.
 
