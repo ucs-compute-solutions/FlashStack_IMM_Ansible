@@ -63,13 +63,13 @@ The API key and Secrets_Filename information is added to the group_vars/all.yml.
 
 <br />
 
-The playbooks in this repository perform following functions:
+The Intersight playbooks in this repository perform following functions:
 
 1. Create various pools required to setup a Server Profile Template
 2. Create various policies required to setup a Server Profile Template
 3. Create iSCSI and/or FC Server Profile Templates
 
-After successfully executing the playbooks, 1 or many server profiles can easily derived and attached to the compute node from Intersight dashboard.
+After successfully executing the playbooks, one or many server profiles can easily derived and attached to the compute node from Intersight dashboard.
 
 **NOTE:** The addition of UCS to Intersight Account or configuration of Domain Profile to setup UCS is not part of this repository and will have to be performed manually before executing the playbooks. 
 
