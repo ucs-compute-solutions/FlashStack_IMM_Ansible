@@ -163,6 +163,8 @@ name_of_ipmi_policy                 : "{{ prefix }}-Enable-IPMIoLAN-Policy"
 
 # Local User Policy to enable KVM and IPMI Access
 name_of_LocalUser_policy            : "{{ prefix }}-LocalUser-Policy"
+name_of_local_user                  : "ipmiuser"
+password_for_local_user             : "H1ghV0ltH1ghV0lt"
 
 # Ethernet QoS Policy to set MTU 9000 and QoS Best Effort;
 # QoS values can be updated in roles/create_server_policies/defaults/main.yml
