@@ -24,7 +24,7 @@
 
           enforce_strong_password: true
           enable_password_expiry: false
-          password_history: 5
+          password_history: 0
           purge: true
           always_update_password: true
           local_users:

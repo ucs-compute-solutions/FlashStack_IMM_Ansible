@@ -34,7 +34,6 @@
                 {
                    "Name": "{{ san_boot_device_1a_name }}",
                    "Lun": "{{ lun_id }}",
-                   "Slot": "{{ vic_slot_id }}",
                    "InterfaceName": "{{ name_of_vhba_a }}",
                    "Wwpn": "{{ san_boot_target_1a_wwpn }}",
                    "Enabled": true,
@@ -43,7 +42,6 @@
                 {
                    "Name": "{{ san_boot_device_2a_name }}",
                    "Lun": "{{ lun_id }}",
-                   "Slot": "{{ vic_slot_id }}",
                    "InterfaceName": "{{ name_of_vhba_a }}",
                    "Wwpn": "{{ san_boot_target_2a_wwpn }}",
                    "Enabled": true,
@@ -52,7 +50,6 @@
                 {
                    "Name": "{{ san_boot_device_1b_name }}",
                    "Lun": "{{ lun_id }}",
-                   "Slot": "{{ vic_slot_id }}",
                    "InterfaceName": "{{ name_of_vhba_b }}",
                    "Wwpn": "{{ san_boot_target_1b_wwpn }}",
                    "Enabled": true,
@@ -61,7 +58,6 @@
                 {
                    "Name": "{{ san_boot_device_2b_name }}",
                    "Lun": "{{ lun_id }}",
-                   "Slot": "{{ vic_slot_id }}",
                    "InterfaceName": "{{ name_of_vhba_b }}",
                    "Wwpn": "{{ san_boot_target_2b_wwpn }}",
                    "Enabled": true,
@@ -115,14 +111,12 @@
                      "Name": "ISCSI-A-Boot",
                      "InterfaceName": "{{ name_of_iscsi_a_vnic }}",
                      "Port": 0,
-                     "Slot": "{{ vic_slot_id }}",
                      "Enabled": true,
                      "ObjectType": "boot.Iscsi"
                   },
                   {
                      "Name": "ISCSI-B-Boot",
                      "InterfaceName": "{{ name_of_iscsi_b_vnic }}",
-                     "Slot": "{{ vic_slot_id }}",
                      "Port": 0,
                      "Enabled": true,
                      "ObjectType": "boot.Iscsi"

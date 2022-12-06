@@ -41,7 +41,7 @@ peerlink_PC:
     # id must be same as port-channel number
     id: "10"
     speed: "auto"
-    duplex: "full"
+    duplex: "auto"
     description: "vPC Peer Link"
 #
 FI_A_PC:

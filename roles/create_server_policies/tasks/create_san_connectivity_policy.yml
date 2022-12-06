@@ -43,8 +43,8 @@
             "WwpnPool": "{{ wwpn_pool_san_a_details.api_response.Moid }}",
             "Placement": {
               "SwitchId": "A",
-              "Id": "{{ vic_slot_id }}",
-              "Uplink": 0
+              "AutoPciLink": true,
+              "AutoSlotId": true
             },
             "PersistentBindings": false,
             "FcNetworkPolicy": "{{ fc_network_policy_san_a.api_response.Moid }}",
@@ -68,8 +68,8 @@
             "WwpnPool": "{{ wwpn_pool_san_b_details.api_response.Moid }}",
             "Placement": {
               "SwitchId": "B",
-              "Id": "{{ vic_slot_id }}",
-              "Uplink": 0
+              "AutoPciLink": true,
+              "AutoSlotId": true
             },
             "PersistentBindings": false,
             "FcNetworkPolicy": "{{ fc_network_policy_san_b.api_response.Moid }}",
@@ -93,8 +93,8 @@
             "WwpnPool": "{{ wwpn_pool_san_a_details.api_response.Moid }}",
             "Placement": {
               "SwitchId": "A",
-              "Id": "{{ vic_slot_id }}",
-              "Uplink": 0
+              "AutoPciLink": true,
+              "AutoSlotId": true
             },
             "PersistentBindings": false,
             "FcNetworkPolicy": "{{ fc_network_policy_san_a.api_response.Moid }}",
@@ -119,8 +119,8 @@
             "WwpnPool": "{{ wwpn_pool_san_b_details.api_response.Moid }}",
             "Placement": {
               "SwitchId": "B",
-              "Id": "{{ vic_slot_id }}",
-              "Uplink": 0
+              "AutoPciLink": true,
+              "AutoSlotId": true
             },
             "PersistentBindings": false,
             "FcNetworkPolicy": "{{ fc_network_policy_san_b.api_response.Moid }}",

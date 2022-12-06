@@ -14,11 +14,11 @@ description_of_kvm_policy           : "KVM Policy to set Tunneled KVM to {{enabl
 description_of_vmedia_policy        : "vMedia Policy to enable KVM mounted DVDs"
 
 # FC Boot Order Policy (if required)
-fc_boot_order_policy_description    : "Fibre Channel Boot Order Policy - VIC-slot-{{ vic_slot_id }}"
+fc_boot_order_policy_description    : "Fibre Channel Boot Order Policy - VIC-slot"
 
 #iSCSI Boot Order Policy (if required)
 
-iscsi_boot_order_policy_description : "iSCSI Boot Order Policy - VIC-slot-{{ vic_slot_id }}"
+iscsi_boot_order_policy_description : "iSCSI Boot Order Policy - VIC-slot"
 
 # IPMI over LAN Policy 
 description_of_ipmi_policy          : "Enable IPMI over LAN"
@@ -103,8 +103,8 @@ description_of_iscsi_a_boot_policy              : "iSCSI-A Boot Policy"
 description_of_iscsi_b_boot_policy              : "iSCSI-B Boot Policy"
 
 # LAN Connectivity Policies
-description_of_iscsi_lan_connectivity_policy    : "LAN Connectivity Policy for iSCSI boot from SAN - {{ vic_type }} VIC-slot-{{ vic_slot_id }}"
-description_of_fc_lan_connectivity_policy       : "LAN Connectivity Policy for FC boot from SAN  VIC-slot-{{ vic_slot_id }}"
+description_of_iscsi_lan_connectivity_policy    : "LAN Connectivity Policy for iSCSI boot from SAN - {{ vic_type }} VIC"
+description_of_fc_lan_connectivity_policy       : "LAN Connectivity Policy for FC boot from SAN - {{ vic_type }} VIC"
 
 # Fibre Channel Network Policy: SAN-A
 description_of_fc_network_policy_san_a  : "SAN-A Fibre Channel Network Policy using VSAN {{ vsan_id_SAN_A }}"
@@ -122,4 +122,4 @@ description_of_fc_adapter_policy    : "Fibre Channel Adapter policy with VMware 
 description_of_fc_nvme_initiator_adapter_policy    : "FC-NVMe Initiator Adapter policy with platform defined default values"
 
 # SAN connectivity Policy
-description_of_san_connectivity_policy  : "SAN Connectivity Policy to add FC HBAs VIC-slot-{{ vic_slot_id }}"
+description_of_san_connectivity_policy  : "SAN Connectivity Policy to add FC HBAs - {{ vic_type }} VIC"
