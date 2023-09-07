@@ -33,7 +33,7 @@
 #
 # Create iSCSI IP pools only if configure_iscsi value is set to true in group_vars/all.yml
 - include_tasks: create_iscsi_pools.yml
-#   when: configure_iscsi == 'true'
+  when: configure_iscsi == 'true'
 #
 # Create FC WWN and WWPN pools only if configure_fc value is set to true in group_vars/all.yml
 - include_tasks: create_fc_ww_pools.yml
